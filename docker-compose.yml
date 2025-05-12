@@ -6,7 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "13001:3001"
     depends_on:
       - backend
     networks:
@@ -17,13 +17,15 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "13002:3002"
     environment:
       - NODE_ENV=production
-      - PORT=3000
+      - PORT=3001
+      - LOG_LEVEL=info
+      - LOG_DIR=/app/logs
+      - LOCAL_EXPORT_BASE_DIR=/app/temp/md_img_export
+      - IMAGE_DOWNLOAD_DELAY_MS=500
       - FRONTEND_URL=http://localhost
-    volumes:
-      - ./logs:/app/logs
     networks:
       - app-network
 
