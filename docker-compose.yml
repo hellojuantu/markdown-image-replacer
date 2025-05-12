@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "13001:3001"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "13002:3002"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - LOG_LEVEL=info
+      - LOG_DIR=/app/logs
+      - LOCAL_EXPORT_BASE_DIR=/app/temp/md_img_export
+      - IMAGE_DOWNLOAD_DELAY_MS=500
+      - FRONTEND_URL=http://localhost
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge 

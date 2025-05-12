@@ -17,7 +17,7 @@ const DEFAULT_TEMP_DIR_BASE = os.tmpdir();
 const localExportBaseDir = path.resolve(process.env.LOCAL_EXPORT_BASE_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'md-img-export'));
 const multerUploadTempDir = path.resolve(process.env.MULTER_UPLOAD_TEMP_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'md-uploads'));
 const IMAGE_DOWNLOAD_DELAY_MS = parseInt(process.env.IMAGE_DOWNLOAD_DELAY_MS || "200", 10);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -111,7 +111,7 @@ app.post('/api/cancel-operation', (req, res) => {
 const cleanupResources = async (operationId, currentTmpDirForGithub, activeSessionIdForLocal, forceCleanup = false) => {
   try {
     const cleanupPromises = [];
-    
+
     if (currentTmpDirForGithub) {
       cleanupPromises.push(
         fs.remove(currentTmpDirForGithub)
@@ -159,9 +159,9 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
     }
   };
 
-  const logSse = (msg) => { 
-    logger.info(`[${operationId}] ${msg}`); 
-    sendSse('log', msg); 
+  const logSse = (msg) => {
+    logger.info(`[${operationId}] ${msg}`);
+    sendSse('log', msg);
   };
 
   const errorSse = (msg, shouldEnd = false) => {
@@ -179,7 +179,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
 
   req.on('close', async () => {
     if (clientDisconnected) return;
-    
+
     clientDisconnected = true;
     if (!controller.signal.aborted) controller.abort();
 
@@ -187,7 +187,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
     logSse('⚠️ 客户端连接已断开');
 
     await cleanupResources(operationId, currentTmpDirForGithub, null);
-    
+
     if (!res.writableEnded) abortSseAndEnd('🛑 后端因客户端断开而中止');
     activeOperations.delete(operationId);
   });
@@ -208,9 +208,9 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
       let content = await fs.readFile(file.path, 'utf-8');
       await fs.remove(file.path);
 
-      const imageRegex = /!\[([^\]]*)\]\((https?:\/\/cdn\.nlark\.com\/[^)]+)\)/g;
+      const imageRegex = /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g;
       const matches = Array.from(content.matchAll(imageRegex));
-      logSse(`🔍 发现 ${matches.length} 张语雀图片`);
+      logSse(`🔍 发现 ${matches.length} 张图片`);
 
       const imagesToProcess = [];
       for (let i = 0; i < matches.length; i++) {
@@ -290,7 +290,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
 
         currentTmpDirForGithub = await fs.mkdtemp(path.join(DEFAULT_TEMP_DIR_BASE, `md-gh-clone-${operationId}-`));
         logSse(`📁 GitHub模式: 克隆目录: ${path.basename(currentTmpDirForGithub)}`);
-        
+
         const git = simpleGit({ baseDir: currentTmpDirForGithub, trimmed: false });
         try {
           await git.clone(`https://${token}@github.com/${username}/${repo}.git`, currentTmpDirForGithub, [
@@ -319,7 +319,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
           await fs.ensureDir(repoImageDir);
           await fs.emptyDir(repoImageDir);
           logSse('🧹 已清空目标图片目录');
-          
+
           const repoGit = simpleGit(currentTmpDirForGithub);
           await repoGit.add('images/.');
           await repoGit.commit('清空图片目录');
@@ -330,7 +330,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
           errorSse('❌ Git 操作失败，请检查权限和网络', true);
           return;
         }
-        
+
         const githubRawPrefix = `https://raw.githubusercontent.com/${username}/${repo}/${branch}/images/`;
         let imagesUploadedCount = 0;
 
@@ -370,7 +370,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
             const repoGit = simpleGit(currentTmpDirForGithub);
             await repoGit.add('images/.');
             const gitStatus = await repoGit.status();
-            
+
             if (gitStatus.files.length > 0) {
               await repoGit.commit(`Upload/update ${imagesUploadedCount} images via tool`);
               logSse(`📦 Git Commit 完成`);
@@ -537,7 +537,7 @@ app.post('/api/cleanup-temp-session', async (req, res) => {
 app.post('/api/cleanup-session', async (req, res) => {
   const { sessionId } = req.query;
   const opId = `cleanup-${sessionId ? sessionId.substring(0,8) : 'anon'}-${Date.now()}`;
-  
+
   if (!sessionId) {
     logger.error(`[${opId}] 无效请求: 缺少 sessionId`);
     return res.status(400).send('Missing sessionId');
@@ -559,10 +559,8 @@ app.post('/api/cleanup-session', async (req, res) => {
   }
 });
 
-// 在服务器启动时初始化目录
 initializeDirectories();
 
-// 启动服务器
 app.listen(PORT, () => {
   logger.info(`🚀 后端服务器正在监听端口 ${PORT}`);
   logger.info(`📂 配置的本地导出基础目录: ${localExportBaseDir}`);

@@ -2,7 +2,7 @@
   "name": "markdown-image-replacer",
   "version": "1.0.0",
   "type": "module",
-  "main": "dist/replace-handler-api.js",
+  "main": "Server.js",
   "scripts": {
     "start": "node Server.js"
   },
