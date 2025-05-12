@@ -1,4 +1,4 @@
-# Markdown Image Link Replacement Tool
+# Markdown Image Replacer
 
 [English](README.md) | [中文](README.zh-CN.md)
 
