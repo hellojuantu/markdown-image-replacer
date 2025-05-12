@@ -21,6 +21,40 @@
 - 后端：Node.js + TypeScript
 - 图片处理：TinyPNG API（可选）
 
+## 使用 Docker 运行
+
+1. 确保已安装 Docker 和 Docker Compose
+
+2. 克隆仓库：
+```bash
+git clone <repository-url>
+cd markdown-image-replacer
+```
+
+3. 使用 Docker Compose 启动服务：
+```bash
+docker-compose up -d
+```
+
+4. 访问应用：
+- 前端界面：http://localhost
+- 后端 API：http://localhost:3000
+
+5. 查看日志：
+```bash
+# 查看所有服务的日志
+docker-compose logs -f
+
+# 查看特定服务的日志
+docker-compose logs -f frontend
+docker-compose logs -f backend
+```
+
+6. 停止服务：
+```bash
+docker-compose down
+```
+
 ## 开发环境设置
 
 1. 安装依赖：
