@@ -6,6 +6,8 @@ This tool processes image links in Markdown files, supporting two modes:
 - **GitHub Mode**: Upload images to a GitHub repository and update links in your Markdown.
 - **Local Mode**: Download a ZIP archive containing all images.
 
+![index.png](./images/index.png)
+
 ## Features
 
 - **GitHub Mode**: Automatically upload images to GitHub and rewrite links.

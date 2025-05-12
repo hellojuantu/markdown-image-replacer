@@ -6,6 +6,8 @@
 - **GitHub 模式**：将图片上传到 GitHub 仓库并更新 Markdown 中的链接
 - **本地模式**：下载包含所有图片的 ZIP 包
 
+![index.png](./images/index.png)
+
 ## 功能特点
 
 - 支持 **GitHub 模式** 和 **本地模式**
