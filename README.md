@@ -1,5 +1,7 @@
 # Markdown 图片链接替换工具
 
+![index.png](./images/index.png)
+
 这是一个用于处理 Markdown 文件中图片链接的工具，支持两种模式：
 - GitHub 模式：将图片上传到 GitHub 仓库并更新 Markdown 中的链接
 - 本地模式：下载包含图片的 ZIP 文件
