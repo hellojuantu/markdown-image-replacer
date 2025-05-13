@@ -24,6 +24,12 @@
 
 ## 使用 Docker 运行
 
+### 一键安装（推荐）
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
+```
+
+### 手动安装
 1. 安装 Docker 和 Docker Compose
 2. 克隆仓库：
    ```bash

@@ -24,6 +24,12 @@ This tool processes image links in Markdown files, supporting two modes:
 
 ## Docker Usage
 
+### One-Click Installation (Recommended)
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
+```
+
+### Manual Installation
 1. Install Docker and Docker Compose
 2. Clone the repo:
    ```bash
