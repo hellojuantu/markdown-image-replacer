@@ -34,7 +34,7 @@ This tool processes image links in Markdown files, supporting two modes:
 2. Clone the repo:
    ```bash
    git clone https://github.com/hellojuantu/markdown-image-replacer.git
-   cd markdown-image-replacer
+   cd markdown-image-replacer/docker
    ```
 3. Start services:
    ```bash

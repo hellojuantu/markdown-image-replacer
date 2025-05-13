@@ -34,7 +34,7 @@
 2. 克隆仓库：
    ```bash
    git clone https://github.com/hellojuantu/markdown-image-replacer.git
-   cd markdown-image-replacer
+   cd markdown-image-replacer/docker
    ```
 3. 启动服务：
    ```bash
