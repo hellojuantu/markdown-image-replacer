@@ -9,7 +9,7 @@ import fetch from 'node-fetch';
 import crypto from 'crypto';
 import winston from 'winston';
 import cors from 'cors';
-import {processImageWithBorder} from "./ProcessImageWithBorder.js";
+import { processImageWithBorder } from "./ProcessImageWithBorder.js";
 
 dotenv.config();
 
@@ -22,17 +22,17 @@ const PORT = process.env.PORT || 13000;
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
-      winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-      winston.format.errors({ stack: true }),
-      winston.format.splat(),
-      winston.format.json()
+    winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
+    winston.format.errors({ stack: true }),
+    winston.format.splat(),
+    winston.format.json()
   ),
   defaultMeta: { service: 'markdown-image-replacer' },
   transports: [
     new winston.transports.Console({
       format: winston.format.combine(
-          winston.format.colorize(),
-          winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message} ${info.stack ? '\n' + info.stack : ''}`)
+        winston.format.colorize(),
+        winston.format.printf(info => `${info.timestamp} ${info.level}: ${info.message} ${info.stack ? '\n' + info.stack : ''}`)
       )
     }),
     new winston.transports.File({ filename: path.join(process.env.LOG_DIR || 'logs', 'error.log'), level: 'error' }),
@@ -69,16 +69,19 @@ const upload = multer({ storage });
 const app = express();
 const activeOperations = new Map();
 
-const allowedOrigins = ['http://127.0.0.1:13001', 'http://localhost:13001', process.env.FRONTEND_URL].filter(Boolean);
+const allowedOrigins = [
+  ...(process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',').map(url => url.trim()) : [])
+].filter(Boolean);
+
 const corsOptions = {
-  origin: (origin, callback) => {
+  origin: process.env.FRONTEND_URL ? (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       logger.warn(`CORS: 拒绝来源: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
-  },
+  } : '*',
   methods: ['GET', 'POST', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
@@ -438,7 +441,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
 
 app.get('/api/temp-image', async (req, res) => {
   const { sessionId, filename } = req.query;
-  const opId = `img-req-${sessionId ? sessionId.substring(0,8) : 'anon'}-${Date.now()}`;
+  const opId = `img-req-${sessionId ? sessionId.substring(0, 8) : 'anon'}-${Date.now()}`;
   logger.info(`[${opId}] GET /api/temp-image: sessionId=${sessionId}, filename=${filename}`);
 
   if (!sessionId || !filename || typeof sessionId !== 'string' || typeof filename !== 'string') {
@@ -505,7 +508,7 @@ app.get('/api/temp-image', async (req, res) => {
 
 app.post('/api/cleanup-temp-session', async (req, res) => {
   const { sessionId, operationId: clientOpId } = req.query;
-  const opId = clientOpId || `cleanup-fallback-${sessionId ? sessionId.substring(0,8) : 'anon'}-${Date.now()}`;
+  const opId = clientOpId || `cleanup-fallback-${sessionId ? sessionId.substring(0, 8) : 'anon'}-${Date.now()}`;
   logger.info(`[${opId}] POST /api/cleanup-temp-session: sessionId=${sessionId}`);
   if (!sessionId || typeof sessionId !== 'string') {
     logger.error(`[${opId}] 无效请求: 缺少 sessionId。`);
@@ -536,7 +539,7 @@ app.post('/api/cleanup-temp-session', async (req, res) => {
 
 app.post('/api/cleanup-session', async (req, res) => {
   const { sessionId } = req.query;
-  const opId = `cleanup-${sessionId ? sessionId.substring(0,8) : 'anon'}-${Date.now()}`;
+  const opId = `cleanup-${sessionId ? sessionId.substring(0, 8) : 'anon'}-${Date.now()}`;
 
   if (!sessionId) {
     logger.error(`[${opId}] 无效请求: 缺少 sessionId`);
