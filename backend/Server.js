@@ -44,9 +44,9 @@ const logger = winston.createLogger({
 
 const initializeDirectories = () => {
   try {
-    fs.ensureDirSync(localExportBaseDir);
+    fs.ensureDirSync(localExportBaseDir, null);
     fs.emptyDirSync(localExportBaseDir);
-    fs.ensureDirSync(multerUploadTempDir);
+    fs.ensureDirSync(multerUploadTempDir, null);
     logger.info(`目录初始化完成: ${localExportBaseDir}, ${multerUploadTempDir}`);
   } catch (e) {
     logger.error(`目录初始化错误: ${e.message}`, { stack: e.stack });
@@ -158,7 +158,9 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
     } catch (error) {
       logger.error(`[${operationId}] SSE 发送错误: ${error.message}`);
       clientDisconnected = true;
-      if (!controller.signal.aborted) controller.abort();
+      if (!controller.signal.aborted) {
+        controller.abort();
+      }
     }
   };
 
