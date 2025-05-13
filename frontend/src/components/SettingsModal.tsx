@@ -130,10 +130,6 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                             : (processingMode === 'github' ? '校验并保存 GitHub 配置' : '保存压缩设置')}
                     </button>
                     {configError && <div className="alert alert-error">{configError}</div>}
-                    {configStatus === 'ok' && !configError && !checkingConfig && processingMode === 'github' &&
-                        <div className="alert alert-success">✅ GitHub 配置有效</div>}
-                    {configStatus === 'ok' && !configError && !checkingConfig && processingMode === 'local' &&
-                        <div className="alert alert-success">✅ 压缩设置已应用</div>}
                 </footer>
             </div>
         </div>
