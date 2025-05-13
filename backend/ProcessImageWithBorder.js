@@ -2,19 +2,19 @@ import {createCanvas, loadImage} from 'canvas';
 import fetch from 'node-fetch';
 
 const config = {
-    imageOffset: { value: 24 },
-    shadowOffset: { value: 5 },
-    shadowBlur: { value: 8 },
-    shadowColorAlpha: { value: 3 },
-    shadowColor: { value: "#000000" },
-    borderLength: { value: 1 },
-    borderColor: { value: "#000000" },
+    imageOffset: {value: 24},
+    shadowOffset: {value: 5},
+    shadowBlur: {value: 8},
+    shadowColorAlpha: {value: 3},
+    shadowColor: {value: "#000000"},
+    borderLength: {value: 1},
+    borderColor: {value: "#000000"},
 };
 
 export async function processImageWithBorder(inputBuffer, enableCompression = false, apiKey = '', log) {
-    log('[🔧] 开始处理图片...');
+    log('[🔧] Starting image processing...');
     const img = await loadImage(inputBuffer);
-    log('[🎨] 图像尺寸:', img.width, 'x', img.height);
+    log('[🎨] Image dimensions:', img.width, 'x', img.height);
     const offset = config.imageOffset.value;
     const shadowOffset = config.shadowOffset.value;
 
@@ -50,14 +50,14 @@ export async function processImageWithBorder(inputBuffer, enableCompression = fa
     ctx.strokeStyle = config.borderColor.value;
     ctx.strokeRect(centerOffsetX, centerOffsetY, img.width, img.height);
 
-    log('[🔧] 开始处理图片...');
+    log('[🔧] Starting image processing...');
     const buffer = canvas.toBuffer('image/png');
 
     if (enableCompression && apiKey) {
-        log('[📦] 准备进行 TinyPNG 压缩...');
+        log('[📦] Preparing for TinyPNG compression...');
         const compressedBuffer = await compressWithTinyPNG(buffer, apiKey);
-        log(`[✅] TinyPNG 压缩完成，原始大小: ${buffer.length} bytes`);
-        log(`[✅] 压缩后大小: ${compressedBuffer.length} bytes`);
+        log(`[✅] TinyPNG compression completed, original size: ${buffer.length} bytes`);
+        log(`[✅] Compressed size: ${compressedBuffer.length} bytes`);
         return compressedBuffer;
     } else {
         return buffer;
@@ -82,5 +82,5 @@ async function compressWithTinyPNG(imageBuffer, apiKey) {
 
     const result = await response.json();
     const finalRes = await fetch(result.output.url);
-    return await finalRes.buffer();
+    return Buffer.from(await finalRes.arrayBuffer());
 }

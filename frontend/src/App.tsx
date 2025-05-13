@@ -3,14 +3,17 @@ import JSZip from 'jszip';
 import {saveAs} from 'file-saver';
 import {v4 as uuidv4} from 'uuid';
 import "./index.css";
-import {Config, ProcessingMode, ConfigStatus, defaultConfigValues} from './types';
+import {ProcessingMode, defaultConfigValues} from './types';
 import SettingsModal from './components/SettingsModal';
 import OutputModal from './components/OutputModal';
 import LogDisplay from './components/LogDisplay';
 import ControlsSection from './components/ControlsSection';
+import LanguageSwitcher from './components/LanguageSwitcher';
+import {useTranslation} from 'react-i18next';
 
 // --- Main App Component ---
 export default function MarkdownImageReplacer() {
+    const {t} = useTranslation();
     const [config, setConfig] = useState(defaultConfigValues);
     const [isConfigOpen, setIsConfigOpen] = useState(false);
     const [configStatus, setConfigStatus] = useState<'unknown' | 'ok' | 'error'>('unknown');
@@ -34,7 +37,7 @@ export default function MarkdownImageReplacer() {
     const [processingMode, setProcessingMode] = useState<ProcessingMode>('github');
     const [isOutputModalOpen, setIsOutputModalOpen] = useState(false);
     const [showViewResultButton, setShowViewResultButton] = useState(false);
-    const [copyButtonText, setCopyButtonText] = useState("📋 复制内容");
+    const [copyButtonText, setCopyButtonText] = useState(t('logs.copy.button'));
     const [userId, setUserId] = useState<string>('');
 
     useEffect(() => {
@@ -74,7 +77,6 @@ export default function MarkdownImageReplacer() {
         }
         if (processingMode === 'github' && (!loadedConfig.username || !loadedConfig.token || !loadedConfig.repo || !loadedConfig.branch)) {
             setConfigStatus('unknown');
-            // if (!saved) setIsConfigOpen(true);
         } else if (processingMode === 'local') {
             setConfigStatus('ok');
         } else {
@@ -101,7 +103,7 @@ export default function MarkdownImageReplacer() {
                 handleCancelProcessing().then(r => {
                     // do nothing
                 });
-                const message = '处理仍在进行中，确定要离开吗？未保存的更改将会丢失。';
+                const message = t('logs.warning.leavePage');
                 event.preventDefault();
                 event.returnValue = message;
                 return message;
@@ -113,7 +115,7 @@ export default function MarkdownImageReplacer() {
         return () => {
             window.removeEventListener('beforeunload', handleBeforeUnload);
         };
-    }, [loading, isAborting]);
+    }, [loading, isAborting, t]);
 
     const handleLogContainerScroll = () => {
         const container = logContainerRef.current;
@@ -139,16 +141,16 @@ export default function MarkdownImageReplacer() {
             localStorage.setItem("mdUploaderSettings", JSON.stringify(localConfigToSave));
             setIsConfigOpen(false);
             setConfigStatus('ok');
-            log('🔧 本地模式设置已保存 (压缩偏好)。');
+            log('🔧 Local mode settings saved (compression preference).');
             return;
         }
         if (!config.username || !config.repo || !config.branch || !config.token) {
-            setConfigError('❌ GitHub 用户名、仓库名、分支和 Access Token 不能为空');
+            setConfigError(t('settings.github.error.emptyFields'));
             setConfigStatus('error');
             return;
         }
         if (config.enableCompression && !config.tinifyKey) {
-            setConfigError('❌ 启用图片压缩时，TinyPNG API Key 不能为空');
+            setConfigError(t('settings.compression.error.emptyKey'));
             setConfigStatus('error');
             return;
         }
@@ -157,40 +159,43 @@ export default function MarkdownImageReplacer() {
             const repoResp = await fetch(`https://api.github.com/repos/${config.username}/${config.repo}`, {headers: {Authorization: `token ${config.token}`}});
             if (!repoResp.ok) {
                 setConfigStatus('error');
-                setConfigError(`⚠️ 仓库无法访问或权限不足 (${repoResp.status})。`);
+                setConfigError(t('settings.github.error.noAccess', {status: repoResp.status}));
                 return;
             }
             const branchResp = await fetch(`https://api.github.com/repos/${config.username}/${config.repo}/branches/${config.branch}`, {headers: {Authorization: `token ${config.token}`}});
             if (!branchResp.ok) {
                 setConfigStatus('error');
-                setConfigError(`❌ 分支 '${config.branch}' 不存在 (${branchResp.status})。`);
+                setConfigError(t('settings.github.error.branchNotFound', {
+                    branch: config.branch,
+                    status: branchResp.status
+                }));
                 return;
             }
             setConfigStatus('ok');
             localStorage.setItem("mdUploaderSettings", JSON.stringify(config));
             setIsConfigOpen(false);
-            log('✅ GitHub 配置已保存并通过校验。');
+            log('✅ GitHub configuration saved and verified.');
         } catch (e: any) {
             setConfigStatus('error');
-            setConfigError('❌ 无法连接 GitHub API。请检查网络或 Token。 ' + e.message);
+            setConfigError(t('settings.github.error.apiConnection', {error: e.message}));
         } finally {
             setCheckingConfig(false);
         }
     };
 
     const logProcessingParameters = useCallback(() => {
-        log(`⚙️ 处理模式: ${processingMode === 'github' ? '上传到 GitHub' : '下载本地 ZIP'}`);
+        log(`⚙️ Processing mode: ${processingMode === 'github' ? 'Upload to GitHub' : 'Download local ZIP'}`);
         if (processingMode === 'github') {
-            log(`🔧 GitHub 用户名: ${config.username}`);
-            log(`🔧 GitHub 仓库: ${config.repo}`);
-            log(`🔧 GitHub 分支: ${config.branch}`);
+            log(`🔧 GitHub username: ${config.username}`);
+            log(`🔧 GitHub repository: ${config.repo}`);
+            log(`🔧 GitHub branch: ${config.branch}`);
         }
-        log(`🖼️ 图片压缩: ${config.enableCompression ? `启用 (Key: ${config.tinifyKey ? '已设置' : '未设置'})` : '未启用'}`);
+        log(`🖼️ Image compression: ${config.enableCompression ? `Enabled (Key: ${config.tinifyKey ? 'Set' : 'Not set'})` : 'Not enabled'}`);
     }, [config, log, processingMode]);
 
     const handleCancelProcessing = useCallback(async () => {
         if (!currentOperationIdRef.current) {
-            log("⚠️ 无法取消：未找到当前操作ID。");
+            log("⚠️ Unable to cancel: Current operation ID not found.");
             if (abortControllerRef.current) {
                 console.log("abort:", abortControllerRef.current)
                 abortControllerRef.current.abort();
@@ -200,19 +205,19 @@ export default function MarkdownImageReplacer() {
         }
         if (!isAborting) {
             setIsAborting(true);
-            log("⚠️ 用户请求终止处理，正在通知后端...");
+            log("⚠️ User requested termination, notifying backend...");
 
             try {
                 const cancelResponse = await fetch(`/api/cancel-operation?operationId=${currentOperationIdRef.current}`, {
                     method: 'POST',
                 });
                 if (cancelResponse.ok) {
-                    log("✅ 后端已收到取消请求。");
+                    log("✅ Backend received cancellation request.");
                 } else {
-                    log(`⚠️ 后端取消请求失败: ${cancelResponse.status} ${cancelResponse.statusText}`);
+                    log(`⚠️ Backend cancellation request failed: ${cancelResponse.status} ${cancelResponse.statusText}`);
                 }
             } catch (error: any) {
-                log(`❌ 发送取消请求到后端时出错: ${error.message}`);
+                log(`❌ Error sending cancellation request to backend: ${error.message}`);
             }
 
             if (abortControllerRef.current) {
@@ -226,7 +231,7 @@ export default function MarkdownImageReplacer() {
         pathInZip: string;
         blob: Blob
     }>, mdFilename: string, zipFilename: string) => {
-        log('📦 开始创建 ZIP 文件...');
+        log('📦 Starting to create ZIP file...');
         try {
             const zip = new JSZip();
             zip.file(mdFilename, markdownContent);
@@ -235,34 +240,34 @@ export default function MarkdownImageReplacer() {
                 if (imagesFolder) {
                     imageFiles.forEach(imgFile => {
                         const displayFilename = imgFile.pathInZip.startsWith("images/") ? imgFile.pathInZip.substring("images/".length) : imgFile.pathInZip;
-                        log(`➕ 添加图片到 ZIP: images/${displayFilename}`);
+                        log(`➕ Adding image to ZIP: images/${displayFilename}`);
                         imagesFolder.file(displayFilename, imgFile.blob);
                     });
                 } else {
-                    log('⚠️ 无法在 ZIP 中创建 images 文件夹。');
+                    log('⚠️ Unable to create images folder in ZIP.');
                     imageFiles.forEach(imgFile => {
-                        log(`➕ 添加图片到 ZIP (根目录): ${imgFile.pathInZip}`);
+                        log(`➕ Adding image to ZIP (root directory): ${imgFile.pathInZip}`);
                         zip.file(imgFile.pathInZip, imgFile.blob);
                     });
                 }
             }
             const zipBlob = await zip.generateAsync({type: "blob"});
             saveAs(zipBlob, zipFilename);
-            log(`✅ ZIP 文件 "${zipFilename}" 已成功生成并开始下载！`);
+            log(`✅ ZIP file "${zipFilename}" generated and started downloading!`);
         } catch (error: any) {
-            log(`❌ 创建 ZIP 文件失败: ${error.message}`);
+            log(`❌ Failed to create ZIP file: ${error.message}`);
             console.error("ZIP Error:", error);
         }
     };
 
     const handleSubmitProcessing = async () => {
         if (processingMode === 'github' && configStatus !== 'ok') {
-            setConfigError('❌ GitHub 配置无效或未校验通过。');
+            setConfigError(t('settings.github.error.invalidConfig'));
             setIsConfigOpen(true);
             return;
         }
         if (!file) {
-            log('❌ 请先选择一个 Markdown 文件。');
+            log('❌ Please select a Markdown file first.');
             return;
         }
 
@@ -273,10 +278,10 @@ export default function MarkdownImageReplacer() {
         setOutput("");
         setShowViewResultButton(false);
         setIsOutputModalOpen(false);
-        setCopyButtonText("📋 复制内容");
+        setCopyButtonText(t('logs.copy.button'));
 
         currentOperationIdRef.current = uuidv4();
-        log(`🚀 处理开始 (操作ID: ${currentOperationIdRef.current})`);
+        log(`🚀 Processing started (Operation ID: ${currentOperationIdRef.current})`);
         logProcessingParameters();
 
         const formData = new FormData();
@@ -304,11 +309,11 @@ export default function MarkdownImageReplacer() {
             });
             if (!response.ok) {
                 const txt = await response.text().catch(() => response.statusText);
-                log(`❌ 后端请求失败 (${response.status}): ${txt}`);
+                log(`❌ Backend request failed (${response.status}): ${txt}`);
                 throw new Error(`Server error: ${response.status}`);
             }
             if (!response.body) {
-                log('❌ 未获取到响应流。');
+                log('❌ No response stream received.');
                 return;
             }
 
@@ -320,8 +325,11 @@ export default function MarkdownImageReplacer() {
             while (continueReading) {
                 const {value, done} = await reader.read();
                 if (done) {
-                    if (buffer.trim()) log(`⚠️ SSE 流意外结束，剩余缓存: ${buffer}`);
-                    log('🏁 后端数据流已关闭。');
+                    if (buffer.trim()) {
+                        log(`⚠️ Unexpected SSE stream end, remaining buffer: ${buffer}`);
+                    }
+
+                    log('🏁 Backend data stream closed.');
                     break;
                 }
                 buffer += decoder.decode(value, {stream: true});
@@ -340,16 +348,16 @@ export default function MarkdownImageReplacer() {
                             if (json.type === 'log') {
                                 log(json.message);
                             } else if (json.type === 'githubProcessingDone') {
-                                log('✅ GitHub 处理成功完成！');
+                                log('✅ GitHub processing completed successfully!');
                                 setOutput(json.content);
                                 setShowViewResultButton(true);
                                 setIsOutputModalOpen(true);
                                 continueReading = false;
                             } else if (json.type === 'localProcessingComplete') {
-                                log('✅ 本地模式服务端文件处理完成。');
+                                log('✅ Local mode backend file processing completed.');
                                 const mdContentForZip = json.content;
                                 if (json.imageFiles && json.imageFiles.length > 0) {
-                                    log(`⏳ 准备从服务端下载 ${json.imageFiles.length} 张图片... (Session: ${json.sessionId})`);
+                                    log(`⏳ Preparing to download ${json.imageFiles.length} images from backend... (Session: ${json.sessionId})`);
                                     const imagePromises = json.imageFiles.map((imgFile: {
                                             filename: string;
                                             pathInZip: string
@@ -357,7 +365,7 @@ export default function MarkdownImageReplacer() {
                                             fetch(`/api/temp-image?sessionId=${json.sessionId}&filename=${encodeURIComponent(imgFile.filename)}`)
                                                 .then((res: any) => {
                                                     if (!res.ok) {
-                                                        log(`❌ 下载图片 ${imgFile.filename} 失败: ${res.status} ${res.statusText}`);
+                                                        log(`❌ Failed to download image ${imgFile.filename}: ${res.status} ${res.statusText}`);
                                                         return {
                                                             pathInZip: imgFile.pathInZip,
                                                             blob: null,
@@ -365,7 +373,7 @@ export default function MarkdownImageReplacer() {
                                                             filename: imgFile.filename
                                                         };
                                                     }
-                                                    log(`👍 图片已下载: ${imgFile.filename}`);
+                                                    log(`👍 Image downloaded: ${imgFile.filename}`);
                                                     return res.blob().then((blob: any) => ({
                                                         pathInZip: imgFile.pathInZip,
                                                         blob,
@@ -375,7 +383,7 @@ export default function MarkdownImageReplacer() {
                                                 })
                                                 .catch(err => {
                                                     console.error(`Workspace error for ${imgFile.filename}:`, err);
-                                                    log(`❌ 下载 ${imgFile.filename} 异常: ${err.message}`);
+                                                    log(`❌ Downloading ${imgFile.filename} failed: ${err.message}`);
                                                     return {
                                                         pathInZip: imgFile.pathInZip,
                                                         blob: null,
@@ -392,36 +400,36 @@ export default function MarkdownImageReplacer() {
                                             }>;
                                             const erroredImagesCount = results.filter(r => r.error).length;
                                             if (erroredImagesCount > 0) {
-                                                log(`⚠️ ${erroredImagesCount} 张图片下载失败，它们将不会包含在 ZIP 中。`);
+                                                log(`⚠️ ${erroredImagesCount} images failed to download, they will not be included in ZIP.`);
                                             }
                                             const baseMdFilename = originalFilename.endsWith('.md') ? originalFilename.slice(0, -3) : originalFilename;
                                             generateAndDownloadZip(mdContentForZip, successfullyFetchedImages, `${baseMdFilename}.md`, `${baseMdFilename}_local_export.zip`);
                                         })
-                                        .catch(err => log(`❌ 下载图片组或生成 ZIP 时发生严重错误: ${err.message}`))
+                                        .catch(err => log(`❌ Failed to download image group or generate ZIP: ${err.message}`))
                                         .then(() => {
                                             if (json.sessionId && currentOperationIdRef.current) {
                                                 fetch(`/api/cleanup-temp-session?sessionId=${json.sessionId}&operationId=${currentOperationIdRef.current}`, {method: 'POST'})
                                                     .then(res => {
-                                                        if (res.ok) log('🧹 后端临时文件清理请求已发送。'); else log('⚠️ 后端临时文件清理请求失败。');
+                                                        if (res.ok) log('🧹 Backend temporary file cleanup request sent.'); else log('⚠️ Backend temporary file cleanup request failed.');
                                                     })
-                                                    .catch(cleanupErr => log(`⚠️ 清理请求失败: ${cleanupErr.message}`));
+                                                    .catch(cleanupErr => log(`⚠️ Cleanup request failed: ${cleanupErr.message}`));
                                             }
                                         });
                                 } else {
-                                    log('ℹ️ 未发现图片文件，将只打包 Markdown 文件。');
+                                    log('ℹ️ No image files found, will only pack Markdown file.');
                                     const baseMdFilename = originalFilename.endsWith('.md') ? originalFilename.slice(0, -3) : originalFilename;
                                     await generateAndDownloadZip(mdContentForZip, [], `${baseMdFilename}.md`, `${baseMdFilename}_local_export.zip`);
                                 }
                                 continueReading = false;
                             } else if (json.type === 'error') {
-                                log(`❌ 后端错误: ${json.message}`);
+                                log(`❌ Backend error: ${json.message}`);
                                 continueReading = false;
                             } else if (json.type === 'aborted') {
-                                log(`🛑 ${json.message || '处理已被后端确认终止。'}`);
+                                log(`🛑 ${json.message || 'Processing aborted by backend.'}`);
                                 continueReading = false;
                             }
                         } catch (parseError: any) {
-                            log(`⚠️ 解析SSE数据错误: ${parseError.message}. 无效数据: "${part}"`);
+                            log(`⚠️ Error parsing SSE data: ${parseError.message}. Invalid data: "${part}"`);
                         }
                     }
                 }
@@ -429,19 +437,19 @@ export default function MarkdownImageReplacer() {
         } catch (err: any) {
             if (err.name === 'AbortError') {
                 if (isAborting) {
-                    log('🛑 操作已被用户通过前端按钮取消。');
+                    log('🛑 Processing canceled by user.');
                 } else {
-                    log('🛑 Fetch 请求被中止 (可能由于网络问题或服务器关闭连接)。');
+                    log('🛑 Fetch request aborted (possibly due to network issues or server closed connection)');
                 }
             } else {
-                log(`❌ 前端请求/处理错误: ${err.message}`);
+                log(`❌ Frontend request/processing error: ${err.message}`);
             }
         } finally {
             setLoading(false);
             setIsAborting(false);
             abortControllerRef.current = null;
             currentOperationIdRef.current = null;
-            log('🔚 前端处理流程结束。');
+            log('🔚 Frontend processing flow ended.');
         }
     };
 
@@ -459,13 +467,13 @@ export default function MarkdownImageReplacer() {
         if (!output) return;
         try {
             await navigator.clipboard.writeText(output);
-            setCopyButtonText("✅ 已复制!");
-            setTimeout(() => setCopyButtonText("📋 复制内容"), 2000);
+            setCopyButtonText(t('logs.copy.success'));
+            setTimeout(() => setCopyButtonText(t('logs.copy.button')), 2000);
         } catch (err) {
             console.error('Failed to copy output: ', err);
-            setCopyButtonText("❌ 复制失败");
-            setTimeout(() => setCopyButtonText("📋 复制内容"), 2000);
-            log("❌ 复制到剪贴板失败。请检查浏览器权限或手动复制。");
+            setCopyButtonText(t('logs.copy.failed'));
+            setTimeout(() => setCopyButtonText(t('logs.copy.button')), 2000);
+            log(t('logs.copy.failed'));
         }
     };
 
@@ -485,20 +493,20 @@ export default function MarkdownImageReplacer() {
 
     const handleViewResult = () => {
         setIsOutputModalOpen(true);
-        setCopyButtonText("📋 复制内容");
+        setCopyButtonText(t('logs.copy.button'));
     };
 
     return (
         <div className="page-container">
             <header className="app-header">
                 <div className="mt-4 flex justify-center">
-                    <h1>Markdown 图片链接替换工具</h1>
+                    <h1>{t('app.title')}</h1>
                     <a
                         className="github-link"
                         href="https://github.com/hellojuantu/markdown-image-replacer/"
                         target="_blank"
                         rel="noopener noreferrer"
-                        title="在 GitHub 上查看项目"
+                        title={t('app.viewOnGithub')}
                     >
                         <svg height="32" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="32"
                              data-view-component="true">
@@ -507,12 +515,15 @@ export default function MarkdownImageReplacer() {
                         </svg>
                     </a>
                 </div>
-                <button className="btn-icon settings-btn-header" onClick={() => {
-                    setIsConfigOpen(true);
-                    setConfigError('');
-                }} title="应用设置">
-                    ⚙️ <span className="btn-icon-text">设置</span>
-                </button>
+                <div className="flex items-center gap-2">
+                    <button className="btn-icon settings-btn-header" onClick={() => {
+                        setIsConfigOpen(true);
+                        setConfigError('');
+                    }} title={t('app.settings')}>
+                        ⚙️ <span className="btn-icon-text">{t('app.settings')}</span>
+                    </button>
+                    <LanguageSwitcher/>
+                </div>
             </header>
 
             <SettingsModal

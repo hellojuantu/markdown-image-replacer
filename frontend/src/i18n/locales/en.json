@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Markdown Image Replacer",
+    "processingMode": {
+      "label": "Processing Mode",
+      "github": "Upload to GitHub",
+      "local": "Download Local ZIP",
+      "cloud": "Cloud",
+      "offline": "Offline"
+    },
+    "viewResult": "View Last Result",
+    "settings": "Settings",
+    "close": "Close",
+    "viewOnGithub": "View on GitHub"
+  },
+  "file": {
+    "upload": "Upload Markdown File (.md)"
+  },
+  "processing": {
+    "aborting": "Aborting...",
+    "abort": "🛑 Abort Processing",
+    "github": {
+      "start": "🚀 Upload and Replace",
+      "configRequired": "GitHub Mode: Please click the \"Settings\" button in the top right to complete GitHub configuration."
+    },
+    "local": {
+      "start": "📦 Generate ZIP"
+    }
+  },
+  "settings": {
+    "github": {
+      "description": "Please configure your GitHub information to upload images and update Markdown. Access Token needs repo permission.",
+      "username": "GitHub Username",
+      "repo": "Repository Name",
+      "branch": "Branch Name",
+      "token": "GitHub Personal Access Token",
+      "save": "Validate and Save GitHub Configuration",
+      "error": {
+        "emptyFields": "❌ GitHub username, repository name, branch, and Access Token cannot be empty",
+        "noAccess": "⚠️ Unable to access repository or insufficient permissions ({{status}})",
+        "branchNotFound": "❌ Branch '{{branch}}' does not exist ({{status}})",
+        "apiConnection": "❌ Unable to connect to GitHub API. Please check network or Token. {{error}}",
+        "invalidConfig": "❌ GitHub configuration is invalid or not validated"
+      }
+    },
+    "local": {
+      "description": "Local mode settings. Image compression is optional."
+    },
+    "compression": {
+      "label": "Enable Image Compression (TinyPNG)",
+      "keyRequired": "API Key Required",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "apiKey": "TinyPNG API Key",
+      "save": "Save Compression Settings",
+      "error": {
+        "emptyKey": "❌ TinyPNG API Key cannot be empty when compression is enabled"
+      }
+    },
+    "saving": "Validating and saving..."
+  },
+  "output": {
+    "title": "Replaced Markdown Content",
+    "copy": "Copy Content",
+    "copied": "Copied!",
+    "copyFailed": "Copy Failed"
+  },
+  "language": {
+    "switchToChinese": "Switch to Chinese",
+    "switchToEnglish": "Switch to English",
+    "chinese": "中",
+    "english": "EN"
+  },
+  "logs": {
+    "title": "Processing Logs",
+    "copy": {
+      "button": "Copy Content",
+      "success": "Copied!",
+      "failed": "Copy Failed"
+    }
+  }
+}
