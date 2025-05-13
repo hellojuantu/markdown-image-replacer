@@ -2,7 +2,7 @@ FROM node:20-slim
 
 RUN apt-get update
 
-RUN apt-get install -y --no-install-recommends --fix-missing \
+RUN apt-get install -y --no-install-recommends \
       python3 \
       make \
       g++ \
