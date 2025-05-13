@@ -1,5 +1,6 @@
 import React from 'react';
-import { Config, ProcessingMode, ConfigStatus } from '../types';
+import {useTranslation} from 'react-i18next';
+import {Config, ProcessingMode, ConfigStatus} from '../types';
 
 interface SettingsModalProps {
     isOpen: boolean;
@@ -14,41 +15,43 @@ interface SettingsModalProps {
 }
 
 const SettingsModal: React.FC<SettingsModalProps> = ({
-    isOpen,
-    onClose,
-    config,
-    setConfig,
-    onSave,
-    processingMode,
-    checkingConfig,
-    configError,
-    configStatus
-}) => {
+                                                         isOpen,
+                                                         onClose,
+                                                         config,
+                                                         setConfig,
+                                                         onSave,
+                                                         processingMode,
+                                                         checkingConfig,
+                                                         configError,
+                                                         configStatus
+                                                     }) => {
+    const {t} = useTranslation();
+
     if (!isOpen) return null;
     return (
         <div className="modal-overlay">
             <div className="modal-content" onClick={e => e.stopPropagation()}>
                 <header className="modal-header">
-                    <h2>应用设置</h2>
-                    <button 
-                        className="btn-icon modal-close-btn" 
-                        onClick={onClose} 
+                    <h2>{t('app.settings')}</h2>
+                    <button
+                        className="btn-icon modal-close-btn"
+                        onClick={onClose}
                         disabled={checkingConfig}
-                        title="Close"
+                        title={t('app.close')}
                     >
                         &times;
                     </button>
                 </header>
                 <div className="modal-body">
                     <p className="modal-description">
-                        {processingMode === 'github' 
-                            ? "请配置您的 GitHub 信息以上传图片和更新 Markdown。Access Token 需要 repo 权限。" 
-                            : "本地模式设置。图片压缩为可选项。"}
+                        {processingMode === 'github'
+                            ? t('settings.github.description')
+                            : t('settings.local.description')}
                     </p>
                     {processingMode === 'github' && (
                         <>
                             <div className="form-group">
-                                <label htmlFor="username">GitHub 用户名</label>
+                                <label htmlFor="username">{t('settings.github.username')}</label>
                                 <input
                                     id="username"
                                     type="text"
@@ -58,7 +61,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="repo">仓库名称</label>
+                                <label htmlFor="repo">{t('settings.github.repo')}</label>
                                 <input
                                     id="repo"
                                     type="text"
@@ -68,7 +71,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="branch">分支名称</label>
+                                <label htmlFor="branch">{t('settings.github.branch')}</label>
                                 <input
                                     id="branch"
                                     type="text"
@@ -78,7 +81,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                                 />
                             </div>
                             <div className="form-group">
-                                <label htmlFor="token">GitHub Personal Access Token</label>
+                                <label htmlFor="token">{t('settings.github.token')}</label>
                                 <input
                                     id="token"
                                     type="password"
@@ -98,15 +101,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                             disabled={checkingConfig}
                         />
                         <label htmlFor="enableCompression">
-                            启用图片压缩 (TinyPNG)
-                            - {config.enableCompression && !config.tinifyKey 
-                                ? '需要 API Key' 
-                                : (config.enableCompression ? '已启用' : '未启用')}
+                            {t('settings.compression.label')}
+                            - {config.enableCompression && !config.tinifyKey
+                            ? t('settings.compression.keyRequired')
+                            : (config.enableCompression ? t('settings.compression.enabled') : t('settings.compression.disabled'))}
                         </label>
                     </div>
                     {config.enableCompression && (
                         <div className="form-group">
-                            <label htmlFor="tinifyKey">TinyPNG API Key</label>
+                            <label htmlFor="tinifyKey">{t('settings.compression.apiKey')}</label>
                             <input
                                 id="tinifyKey"
                                 type="text"
@@ -121,13 +124,13 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     <button
                         className="btn btn-primary"
                         onClick={onSave}
-                        disabled={checkingConfig || 
-                            (processingMode === 'github' && (!config.username || !config.repo || !config.token)) || 
+                        disabled={checkingConfig ||
+                            (processingMode === 'github' && (!config.username || !config.repo || !config.token)) ||
                             (config.enableCompression && !config.tinifyKey)}
                     >
-                        {checkingConfig 
-                            ? '校验并保存中...' 
-                            : (processingMode === 'github' ? '校验并保存 GitHub 配置' : '保存压缩设置')}
+                        {checkingConfig
+                            ? t('settings.saving')
+                            : (processingMode === 'github' ? t('settings.github.save') : t('settings.compression.save'))}
                     </button>
                     {configError && <div className="alert alert-error">{configError}</div>}
                 </footer>
@@ -136,4 +139,4 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
     );
 };
 
-export default SettingsModal; 
+export default SettingsModal;

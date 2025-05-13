@@ -1,4 +1,5 @@
 import React from 'react';
+import {useTranslation} from 'react-i18next';
 
 interface OutputModalProps {
     isOpen: boolean;
@@ -9,30 +10,35 @@ interface OutputModalProps {
 }
 
 const OutputModal: React.FC<OutputModalProps> = ({
-    isOpen,
-    onClose,
-    outputContent,
-    onCopy,
-    copyButtonText
-}) => {
-    if (!isOpen) return null;
+                                                     isOpen,
+                                                     onClose,
+                                                     outputContent,
+                                                     onCopy,
+                                                     copyButtonText
+                                                 }) => {
+    const {t} = useTranslation();
+
+    if (!isOpen) {
+        return null;
+    }
+
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content output-display-modal" onClick={e => e.stopPropagation()}>
                 <header className="modal-header">
-                    <h2>替换后的 Markdown 内容</h2>
-                    <button 
-                        className="btn-icon modal-close-btn" 
-                        onClick={onClose} 
-                        title="Close"
+                    <h2>{t('output.title')}</h2>
+                    <button
+                        className="btn-icon modal-close-btn"
+                        onClick={onClose}
+                        title={t('app.close')}
                     >
                         &times;
                     </button>
                 </header>
                 <div className="modal-body">
-                    <textarea 
-                        readOnly 
-                        value={outputContent} 
+                    <textarea
+                        readOnly
+                        value={outputContent}
                         className="output-modal-textarea"
                     />
                 </div>
@@ -41,7 +47,7 @@ const OutputModal: React.FC<OutputModalProps> = ({
                         {copyButtonText}
                     </button>
                     <button className="btn btn-secondary" onClick={onClose}>
-                        关闭
+                        {t('app.close')}
                     </button>
                 </footer>
             </div>
@@ -49,4 +55,4 @@ const OutputModal: React.FC<OutputModalProps> = ({
     );
 };
 
-export default OutputModal; 
+export default OutputModal;

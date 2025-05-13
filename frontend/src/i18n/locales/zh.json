@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Markdown 图片链接替换工具",
+    "processingMode": {
+      "label": "处理模式",
+      "github": "上传到 GitHub",
+      "local": "下载本地 ZIP",
+      "cloud": "云端",
+      "offline": "离线"
+    },
+    "viewResult": "查看上次结果",
+    "settings": "设置",
+    "close": "关闭",
+    "viewOnGithub": "在 GitHub 上查看项目"
+  },
+  "file": {
+    "upload": "上传 Markdown 文件 (.md)"
+  },
+  "processing": {
+    "aborting": "终止中...",
+    "abort": "🛑 终止处理",
+    "github": {
+      "start": "🚀 上传替换",
+      "configRequired": "GitHub 模式: 请先点击右上角的\"设置\"按钮完成 GitHub 配置。"
+    },
+    "local": {
+      "start": "📦 生成 ZIP"
+    }
+  },
+  "settings": {
+    "github": {
+      "description": "请配置您的 GitHub 信息以上传图片和更新 Markdown。Access Token 需要 repo 权限。",
+      "username": "GitHub 用户名",
+      "repo": "仓库名称",
+      "branch": "分支名称",
+      "token": "GitHub Personal Access Token",
+      "save": "校验并保存 GitHub 配置",
+      "error": {
+        "emptyFields": "❌ GitHub 用户名、仓库名、分支和 Access Token 不能为空",
+        "noAccess": "⚠️ 仓库无法访问或权限不足 ({{status}})",
+        "branchNotFound": "❌ 分支 '{{branch}}' 不存在 ({{status}})",
+        "apiConnection": "❌ 无法连接 GitHub API。请检查网络或 Token。{{error}}",
+        "invalidConfig": "❌ GitHub 配置无效或未校验通过"
+      }
+    },
+    "local": {
+      "description": "本地模式设置。图片压缩为可选项。"
+    },
+    "compression": {
+      "label": "启用图片压缩 (TinyPNG)",
+      "keyRequired": "需要 API Key",
+      "enabled": "已启用",
+      "disabled": "未启用",
+      "apiKey": "TinyPNG API Key",
+      "save": "保存压缩设置",
+      "error": {
+        "emptyKey": "❌ 启用图片压缩时，TinyPNG API Key 不能为空"
+      }
+    },
+    "saving": "校验并保存中..."
+  },
+  "output": {
+    "title": "替换后的 Markdown 内容",
+    "copy": "复制内容",
+    "copied": "已复制！",
+    "copyFailed": "复制失败"
+  },
+  "language": {
+    "switchToChinese": "切换到中文",
+    "switchToEnglish": "切换到英文",
+    "chinese": "ZH",
+    "english": "EN"
+  },
+  "logs": {
+    "title": "处理日志",
+    "copy": {
+      "button": "复制内容",
+      "success": "已复制！",
+      "failed": "复制失败"
+    }
+  }
+}
