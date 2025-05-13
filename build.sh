@@ -2,6 +2,7 @@
 VERSION=0.0.1
 
 docker buildx build \
+  --no-cache \
   --platform linux/arm64,linux/amd64 \
   -t barrylogen/markdown-image-replacer-frontend:$VERSION \
   -f frontend/Dockerfile \
@@ -9,6 +10,7 @@ docker buildx build \
   --push
 
 docker buildx build \
+  --no-cache \
   --platform linux/arm64,linux/amd64 \
   -t barrylogen/markdown-image-replacer-backend:$VERSION \
   -f backend/Dockerfile \
