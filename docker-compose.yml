@@ -16,11 +16,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    ports:
-      - "13002:3002"
     environment:
       - NODE_ENV=production
-      - PORT=3001
+      - PORT=3000
       - LOG_LEVEL=info
       - LOG_DIR=/app/logs
       - LOCAL_EXPORT_BASE_DIR=/app/temp/md_img_export
