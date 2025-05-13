@@ -38,6 +38,7 @@ This tool processes image links in Markdown files, supporting two modes:
    ```
 3. Start services:
    ```bash
+   echo 'APP_VERSION=0.0.1' > .env
    docker-compose up -d
    ```
 4. Visit: `http://localhost:13001`

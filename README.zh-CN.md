@@ -38,6 +38,7 @@
    ```
 3. 启动服务：
    ```bash
+   echo 'APP_VERSION=0.0.1' > .env
    docker-compose up -d
    ```
 4. 访问应用：http://localhost:13001
