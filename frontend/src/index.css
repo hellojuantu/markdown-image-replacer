@@ -24,15 +24,23 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0.5rem; /* Adjusted padding */
+  padding: 1rem 0.5rem;
   margin-bottom: 1.5rem;
-  /* border-bottom: 1px solid #e0e0e0; */
 }
 
 .app-header h1 {
-  font-size: 1.75rem; /* Slightly reduced */
+  font-size: 1.75rem;
   color: #1a2b4d;
   font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.app-header .flex {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .settings-btn-header {
@@ -48,6 +56,7 @@ body {
 }
 .btn-icon-text {
   margin-left: 0.3rem;
+  font-size: large;
 }
 
 
@@ -510,4 +519,16 @@ body {
 .btn-outline-primary:hover {
   background-color: rgba(74, 144, 226, 0.1); /* Light primary color background */
   color: #357abd;
+}
+
+.github-link {
+  display: flex;
+  align-items: center;
+  color: #24292e;
+  transition: transform 0.2s ease;
+}
+
+.github-link:hover {
+  transform: scale(1.1);
+  color: #0366d6;
 }

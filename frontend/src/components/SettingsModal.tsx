@@ -26,9 +26,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
 }) => {
     if (!isOpen) return null;
     return (
-        <div className="modal-overlay" onClick={() => {
-            if (!checkingConfig) onClose();
-        }}>
+        <div className="modal-overlay">
             <div className="modal-content" onClick={e => e.stopPropagation()}>
                 <header className="modal-header">
                     <h2>应用设置</h2>
