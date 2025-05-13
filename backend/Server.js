@@ -17,7 +17,7 @@ const DEFAULT_TEMP_DIR_BASE = os.tmpdir();
 const localExportBaseDir = path.resolve(process.env.LOCAL_EXPORT_BASE_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'md-img-export'));
 const multerUploadTempDir = path.resolve(process.env.MULTER_UPLOAD_TEMP_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'md-uploads'));
 const IMAGE_DOWNLOAD_DELAY_MS = parseInt(process.env.IMAGE_DOWNLOAD_DELAY_MS || "200", 10);
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 13000;
 
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
@@ -69,7 +69,7 @@ const upload = multer({ storage });
 const app = express();
 const activeOperations = new Map();
 
-const allowedOrigins = ['http://127.0.0.1:3001', 'http://localhost:3001', process.env.FRONTEND_URL].filter(Boolean);
+const allowedOrigins = ['http://127.0.0.1:13001', 'http://localhost:13001', process.env.FRONTEND_URL].filter(Boolean);
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
