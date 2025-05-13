@@ -7,7 +7,7 @@ export default ({mode}) => {
         plugins: [react()],
         server: {
             proxy: {
-                "/api": env.SERVER_URL || "http://localhost:3002"
+                "/api": env.SERVER_URL || "http://localhost:3000"
             }
         }
     });

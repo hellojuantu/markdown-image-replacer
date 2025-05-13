@@ -119,11 +119,6 @@ export default function MarkdownImageReplacer() {
         if (container) {
             const threshold = 40;
             const atBottom = container.scrollHeight - container.scrollTop - container.clientHeight < threshold;
-            console.log("container.scrollHeight:", container.scrollHeight)
-            console.log("container.scrollTop:", container.scrollTop)
-            console.log("container.clientHeight:", container.clientHeight)
-            console.log("threshold:", threshold)
-            console.log("atBottom:", atBottom)
             setUserHasScrolled(!atBottom);
         }
     };

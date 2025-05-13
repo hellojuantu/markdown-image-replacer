@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2017",            // 输出目标，支持 async/await
-    "lib": ["DOM", "ES2017"],      // 包含 Promise、Fetch 等声明
-    "jsx": "react-jsx",            // React 17+ JSX
-    "module": "ESNext",            // 保持 Vite 默认
+    "target": "ES2017",            
+    "lib": ["DOM", "ES2017"],      
+    "jsx": "react-jsx",            
+    "module": "ESNext",            
     "moduleResolution": "node",
     "strict": true,
     "esModuleInterop": true,
