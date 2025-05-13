@@ -3,8 +3,9 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: ../frontend
+      dockerfile: ../frontend/Dockerfile
+    image: barrylogen/markdown-image-replacer-frontend:${APP_VERSION}
     ports:
       - "13001:13001"
     depends_on:
@@ -14,8 +15,9 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: ../backend
+      dockerfile: ../backend/Dockerfile
+    image: barrylogen/markdown-image-replacer-backend:${APP_VERSION}
     environment:
       - NODE_ENV=production
       - PORT=13000

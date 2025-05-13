@@ -1,13 +1,15 @@
 # 依赖目录
 node_modules/
 
-
 # 构建输出
 frontend/dist/
 build/
 *.tsbuildinfo
 temp/
 logs/
+
+# 环境变量
+docker/.env
 
 # 日志
 logs/
