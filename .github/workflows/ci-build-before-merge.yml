@@ -1,0 +1,29 @@
+name: CI Build Before Merge
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install
+        run: |
+          cd backend && npm ci
+          cd ../frontend && npm ci
+
+      - name: Build Backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
