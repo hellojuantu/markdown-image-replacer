@@ -3,7 +3,6 @@ FROM node:20-slim
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
       ca-certificates \
-      update-ca-certificates \
       git \
       python3 \
       build-essential \
