@@ -1,22 +1,36 @@
 # Markdown Image Replacer
 
-[English](README.md) | [中文](README.zh-CN.md)
+⚡ A tool to process and replace image links in Markdown files effortlessly.
 
-A tool that processes image links in Markdown files with two modes:
-- **GitHub Mode**: Upload images to GitHub and update links
-- **Local Mode**: Download images in a ZIP archive
+[![Build Status](https://github.com/hellojuantu/markdown-image-replacer/actions/workflows/ci-build-before-merge.yml/badge.svg)](https://github.com/hellojuantu/markdown-image-replacer/actions)
+[![Docker Pulls (Backend)](https://img.shields.io/docker/pulls/barrylogen/markdown-image-replacer-backend)](https://hub.docker.com/r/barrylogen/markdown-image-replacer-backend)
+[![Docker Pulls (Frontend)](https://img.shields.io/docker/pulls/barrylogen/markdown-image-replacer-frontend)](https://hub.docker.com/r/barrylogen/markdown-image-replacer-frontend)
+[![License](https://img.shields.io/github/license/hellojuantu/markdown-image-replacer)](LICENSE)
+[![Tech Stack: Node.js, TypeScript, React](https://img.shields.io/badge/Tech%20Stack-Node.js%2C%20TypeScript%2C%20React-blue)](#tech-stack)
 
-![index.png](demo/index.png)
+English | [中文](README.zh-CN.md)
+
+![screenshot](demo/index.png)
+
+## Table of Contents
+
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+- [Usage Guide](#usage-guide)
+- [Configuration](#configuration)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Features
+
 - **Dual Modes**
   - GitHub Mode: Upload to repo & update links
   - Local Mode: Download as ZIP
 - **Image Optimization**: Optional TinyPNG compression
-- **Real-time Processing**: Live logs & progress
-- **User Control**: Cancel anytime
 
 ## Tech Stack
+
 - Frontend: React + TypeScript
 - Backend: Node.js + TypeScript
 - Image: TinyPNG API (optional)
@@ -24,11 +38,13 @@ A tool that processes image links in Markdown files with two modes:
 ## Quick Start
 
 ### One-Click Installation
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
 ```
 
 ### One-Click Uninstallation
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/uninstall.sh)"
 ```
@@ -36,17 +52,19 @@ A tool that processes image links in Markdown files with two modes:
 ## Manual Setup
 
 ### Docker Installation
+
 1. Install Docker and Docker Compose
 2. Clone and run:
    ```bash
    git clone https://github.com/hellojuantu/markdown-image-replacer.git
    cd markdown-image-replacer/docker
    echo 'APP_VERSION=0.0.1' > .env
-   docker-compose up -d
+   docker compose up --build -d
    ```
 3. Access: `http://localhost:13001`
 
 ### Development Setup
+
 1. Install dependencies:
    ```bash
    # Front-end
@@ -63,6 +81,7 @@ A tool that processes image links in Markdown files with two modes:
    ```
 
 ## Usage Guide
+
 1. **Choose Mode**
    - GitHub: Upload to repo
    - Local: Download ZIP
@@ -79,14 +98,20 @@ A tool that processes image links in Markdown files with two modes:
 ## Configuration
 
 ### GitHub Settings
+
 - Username
 - Repository
 - Branch
 - Access Token (repo scope)
 
 ### Image Settings
+
 - Enable compression
 - TinyPNG API key
+
+## Contributing、
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or bug fixes.
 
 ## License
 
