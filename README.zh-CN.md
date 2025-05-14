@@ -73,7 +73,7 @@
 
    # 后端
    cd ../backend
-   npm run dev
+   npm run start
    ```
 
 ## 使用说明

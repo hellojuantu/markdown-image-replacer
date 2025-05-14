@@ -73,7 +73,7 @@ This tool processes image links in Markdown files, supporting two modes:
 
    # Back-end
    cd ../backend
-   npm run dev
+   npm run start
    ```
 
 ## Usage
