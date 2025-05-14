@@ -15,8 +15,8 @@ jobs:
 
       - name: Install
         run: |
-          cd backend && npm ci
-          cd ../frontend && npm ci
+          cd backend && npm i
+          cd ../frontend && npm i
 
       - name: Build Backend
         run: |
@@ -26,4 +26,4 @@ jobs:
       - name: Build Frontend
         run: |
           cd frontend
-          npm run build
+          npm run start
