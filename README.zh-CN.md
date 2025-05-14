@@ -1,6 +1,6 @@
 # Markdown 图片替换器
 
-⚡ 一款高效处理 Markdown 文件中图片链接的工具
+⚡ 一款 Markdown 图片链接的替换工具
 
 [![Build Status](https://github.com/hellojuantu/markdown-image-replacer/actions/workflows/ci-build-before-merge.yml/badge.svg)](https://github.com/hellojuantu/markdown-image-replacer/actions)
 [![Docker Pulls (Backend)](https://img.shields.io/docker/pulls/barrylogen/markdown-image-replacer-backend)](https://hub.docker.com/r/barrylogen/markdown-image-replacer-backend)

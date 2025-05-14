@@ -1,6 +1,6 @@
 # Markdown Image Replacer
 
-⚡ A tool to process and replace image links in Markdown files effortlessly.
+⚡ A tool for replacing image links in Markdown files.
 
 [![Build Status](https://github.com/hellojuantu/markdown-image-replacer/actions/workflows/ci-build-before-merge.yml/badge.svg)](https://github.com/hellojuantu/markdown-image-replacer/actions)
 [![Docker Pulls (Backend)](https://img.shields.io/docker/pulls/barrylogen/markdown-image-replacer-backend)](https://hub.docker.com/r/barrylogen/markdown-image-replacer-backend)
