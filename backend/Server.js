@@ -421,7 +421,6 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
 
                 sendSse('githubProcessingDone', {content});
             }
-            logSse(`[${operationId}] ✅ Server processing completed successfully.`);
         })(),
         new Promise((_, reject) => {
             controller.signal.addEventListener('abort', async () => {
