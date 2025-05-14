@@ -12,7 +12,7 @@ English | [中文](README.zh-CN.md)
 
 ![screenshot](demo/index.png)
 
-## Table of Contents
+## Index
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
