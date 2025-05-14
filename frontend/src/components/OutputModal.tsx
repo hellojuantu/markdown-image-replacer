@@ -23,7 +23,7 @@ const OutputModal: React.FC<OutputModalProps> = ({
     }
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
+        <div className="modal-overlay">
             <div className="modal-content output-display-modal" onClick={e => e.stopPropagation()}>
                 <header className="modal-header">
                     <h2>{t('output.title')}</h2>

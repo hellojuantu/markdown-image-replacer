@@ -472,17 +472,46 @@ export default function MarkdownImageReplacer() {
     };
 
     const handleCopyOutput = async () => {
-        if (!output) return;
-        try {
-            await navigator.clipboard.writeText(output);
-            setCopyButtonText(t('logs.copy.success'));
-            setTimeout(() => setCopyButtonText(t('logs.copy.button')), 2000);
-        } catch (err) {
-            console.error('Failed to copy output: ', err);
-            setCopyButtonText(t('logs.copy.failed'));
-            setTimeout(() => setCopyButtonText(t('logs.copy.button')), 2000);
-            log(t('logs.copy.failed'));
+        if (!output) {
+            return;
         }
+
+        let success = false;
+
+        if (navigator.clipboard) {
+            try {
+                await navigator.clipboard.writeText(output);
+                success = true;
+            } catch (e) {
+                console.warn('Clipboard API failed, falling back to execCommand', e);
+            }
+        }
+
+        if (!success) {
+            const textarea = document.createElement('textarea');
+            textarea.value = output;
+            textarea.setAttribute('readonly', '');
+
+            textarea.style.position = 'absolute';
+            textarea.style.left = '-9999px';
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            try {
+                success = document.execCommand('copy');
+                if (!success) {
+                    throw new Error('execCommand returned false');
+                }
+            } catch (e) {
+                console.error('execCommand copy failed', e);
+            } finally {
+                document.body.removeChild(textarea);
+            }
+        }
+
+        setCopyButtonText(success ? t('logs.copy.success') : t('logs.copy.failed'));
+
+        setTimeout(() => setCopyButtonText(t('logs.copy.button')), 2000);
     };
 
     const handleProcessingModeChange = (mode: ProcessingMode) => {
