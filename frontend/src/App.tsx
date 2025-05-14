@@ -536,7 +536,13 @@ export default function MarkdownImageReplacer() {
 
             <SettingsModal
                 isOpen={isConfigOpen}
-                onClose={() => setIsConfigOpen(false)}
+                onClose={() => {
+                    if (checkingConfig) {
+                        return;
+                    }
+                    loadConfigFromStorage();
+                    setIsConfigOpen(false);
+                }}
                 config={config}
                 setConfig={setConfig}
                 onSave={saveConfigAndValidateForGitHub}

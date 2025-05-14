@@ -112,7 +112,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                             <label htmlFor="tinifyKey">{t('settings.compression.apiKey')}</label>
                             <input
                                 id="tinifyKey"
-                                type="text"
+                                type="password"
                                 value={config.tinifyKey}
                                 onChange={e => setConfig({...config, tinifyKey: e.target.value})}
                                 disabled={checkingConfig}

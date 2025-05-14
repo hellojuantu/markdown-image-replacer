@@ -1,106 +1,93 @@
-# Markdown 图片链接替换工具
+# Markdown Image Replacer
 
 [English](README.md) | [中文](README.zh-CN.md)
 
-这是一个用于处理 Markdown 文件中图片链接的工具，支持两种模式：
-- **GitHub 模式**：将图片上传到 GitHub 仓库并更新 Markdown 中的链接
-- **本地模式**：下载包含所有图片的 ZIP 包
+一个处理 Markdown 文件中图片链接的工具，支持两种模式：
+- **GitHub 模式**：上传图片到 GitHub 并更新链接
+- **本地模式**：下载图片到 ZIP 压缩包
 
-![index-zh-CN.png](demo/index-zh-CN.png)
+![index.png](demo/index.png)
 
 ## 功能特点
-
-- 支持 **GitHub 模式** 和 **本地模式**
-- 可选 **图片压缩**（TinyPNG API）
-- 实时 **处理日志**
-- 支持 **查看/复制** 处理结果
-- 可随时 **取消** 正在进行的操作
+- **双模式支持**
+  - GitHub 模式：上传到仓库并更新链接
+  - 本地模式：下载为 ZIP 压缩包
+- **图片优化**：可选的 TinyPNG 压缩
+- **实时处理**：实时日志和进度
+- **用户控制**：随时可取消
 
 ## 技术栈
-
 - 前端：React + TypeScript
 - 后端：Node.js + TypeScript
 - 图片处理：TinyPNG API（可选）
 
-## 使用 Docker 运行
+## 快速开始
 
-### 一键安装（推荐）
+### 一键安装
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
 ```
 
-### 手动安装
+### 一键卸载
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/uninstall.sh)"
+```
+
+## 手动安装
+
+### Docker 安装
 1. 安装 Docker 和 Docker Compose
-2. 克隆仓库：
+2. 克隆并运行：
    ```bash
    git clone https://github.com/hellojuantu/markdown-image-replacer.git
    cd markdown-image-replacer/docker
-   ```
-3. 启动服务：
-   ```bash
    echo 'APP_VERSION=0.0.1' > .env
    docker-compose up -d
    ```
-4. 访问应用：http://localhost:13001
-5. 查看日志：
-   ```bash
-   docker-compose logs -f
-   docker-compose logs -f frontend
-   docker-compose logs -f backend
-   ```
-6. 停止服务：
-   ```bash
-   docker-compose down
-   ```
+3. 访问：`http://localhost:13001`
 
-## 开发环境设置
-
+### 开发环境
 1. 安装依赖：
    ```bash
-   # 前端依赖
-   cd frontend
-   npm install
-
-   # 后端依赖
-   cd ../backend
-   npm install
+   # 前端
+   cd frontend && npm install
+   # 后端
+   cd ../backend && npm install
    ```
-2. 启动开发服务器：
+2. 运行服务：
    ```bash
    # 前端
-   cd frontend
-   npm run dev
-
+   cd frontend && npm run dev
    # 后端
-   cd ../backend
-   npm run start
+   cd ../backend && npm run start
    ```
 
-## 使用说明
+## 使用指南
+1. **选择模式**
+   - GitHub：上传到仓库
+   - 本地：下载 ZIP
 
-1. 选择处理模式：
-   - GitHub 模式：需配置仓库信息
-   - 本地模式：生成 ZIP 包
+2. **处理文件**
+   - 上传 Markdown 文件
+   - 启用压缩（可选）
+   - 开始处理
 
-2. 上传 Markdown 文件（`.md`）
-3. 配置选项：
-   - 是否启用 TinyPNG 压缩（需 API Key）
-4. 查看结果：
-   - GitHub 模式：复制更新后的 Markdown
-   - 本地模式：下载 ZIP
+3. **获取结果**
+   - GitHub：复制更新后的 Markdown
+   - 本地：下载 ZIP
 
 ## 配置说明
 
-### GitHub 配置
-- 用户名：GitHub 账号
-- 仓库名：目标仓库
-- 分支：目标分支
-- Token：需 `repo` 权限的 Personal Access Token
+### GitHub 设置
+- 用户名
+- 仓库名
+- 分支名
+- 访问令牌（需要 repo 权限）
 
-### 图片压缩配置
-- 启用压缩：勾选 TinyPNG
-- API Key：从 TinyPNG 官网获取
+### 图片设置
+- 启用压缩
+- TinyPNG API 密钥
 
 ## 许可证
 
-本项目采用 MIT 许可证。详情请参见 [LICENSE](LICENSE) 文件。 
+MIT 许可证 - 详见 [LICENSE](LICENSE)
