@@ -1,0 +1,17 @@
+name: Issue Greeting Bot
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Welcome new issue
+        uses: peter-evans/create-issue-comment@v4
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello @${{ github.event.issue.user.login }}! 👋  
+            Thank you for opening this issue. A maintainer will be with you shortly.
