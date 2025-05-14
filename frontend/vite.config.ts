@@ -7,7 +7,15 @@ export default ({mode}) => {
         plugins: [react()],
         server: {
             proxy: {
-                "/api": env.SERVER_URL || "http://localhost:3000"
+                "/api": {
+                    target: env.SERVER_URL || "http://localhost:3000",
+                    changeOrigin: true,
+                    proxyTimeout: 3600000,
+                    timeout: 3600000,
+                    headers: {
+                        "Connection": "keep-alive"
+                    }
+                }
             }
         }
     });

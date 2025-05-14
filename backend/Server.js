@@ -305,6 +305,19 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
 
                 const git = simpleGit({baseDir: currentTmpDirForGithub, trimmed: false});
                 try {
+                    // check email and user.name
+                    const emailResult = await git.raw(['config', '--global', '--get', 'user.email']).catch(() => null);
+                    if (!emailResult) {
+                        logger.info(`[${operationId}] Setting default Git email`);
+                        await git.raw(['config', '--global', 'user.email', 'markdown-image-replacer@github.com']);
+                    }
+                    
+                    const nameResult = await git.raw(['config', '--global', '--get', 'user.name']).catch(() => null);
+                    if (!nameResult) {
+                        logger.info(`[${operationId}] Setting default Git username`);
+                        await git.raw(['config', '--global', 'user.name', 'Markdown Image Replacer']);
+                    }
+
                     await git.clone(`https://${token}@github.com/${username}/${repo}.git`, currentTmpDirForGithub, [
                         '--branch', branch,
                         '--single-branch',
