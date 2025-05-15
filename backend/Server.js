@@ -17,7 +17,8 @@ const DEFAULT_TEMP_DIR_BASE = os.tmpdir();
 const localExportBaseDir = path.resolve(process.env.LOCAL_EXPORT_BASE_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'md-img-export'));
 const multerUploadTempDir = path.resolve(process.env.MULTER_UPLOAD_TEMP_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'md-uploads'));
 const githubCloneBaseDir = path.resolve(process.env.GITHUB_CLONE_BASE_DIR || path.join(DEFAULT_TEMP_DIR_BASE, 'github-clones'));
-const IMAGE_DOWNLOAD_DELAY_MS = parseInt(process.env.IMAGE_DOWNLOAD_DELAY_MS || "200", 10);
+const IMAGE_DOWNLOAD_DELAY_MS = parseInt(process.env.IMAGE_DOWNLOAD_DELAY_MS || "500", 10);
+const IMAGE_DOWNLOAD_TIMEOUT_MS = 5 * 60 * 1000;
 const PORT = process.env.PORT || 13000;
 
 const logger = winston.createLogger({
@@ -260,7 +261,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
                     const localImagePath = path.join(sessionImagesDir, img.filenameWithExt);
                     logSse(`⏳ [Local] Processing: ${img.filenameWithExt}`);
                     try {
-                        const response = await fetch(img.originalUrl, {signal: controller.signal, timeout: 45000});
+                        const response = await fetch(img.originalUrl, {signal: controller.signal, timeout: IMAGE_DOWNLOAD_TIMEOUT_MS});
                         if (!response.ok) {
                             logSse(`❌ Failed to download ${img.filenameWithExt} (${response.status})`);
                             continue;
@@ -367,7 +368,7 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
                 for (const img of imagesToProcess) {
                     logSse(`⏳ [GitHub] Processing: ${img.filenameWithExt}`);
                     try {
-                        const response = await fetch(img.originalUrl, {signal: controller.signal, timeout: 45000});
+                        const response = await fetch(img.originalUrl, {signal: controller.signal, timeout: IMAGE_DOWNLOAD_TIMEOUT_MS});
                         if (!response.ok) {
                             logSse(`❌ Failed to download ${img.filenameWithExt} (${response.status})`);
                             continue;
@@ -559,31 +560,6 @@ app.post('/api/cleanup-temp-session', async (req, res) => {
     } catch (error) {
         logger.error(`[${opId}] Error cleaning up session directory ${resolvedSessionDir}: ${error.message}`, {stack: error.stack});
         res.status(500).send({message: 'Error cleaning up session directory.'});
-    }
-});
-
-app.post('/api/cleanup-session', async (req, res) => {
-    const {sessionId} = req.query;
-    const opId = `cleanup-${sessionId ? sessionId.substring(0, 8) : 'anon'}-${Date.now()}`;
-
-    if (!sessionId) {
-        logger.error(`[${opId}] Invalid request: Missing sessionId`);
-        return res.status(400).send('Missing sessionId');
-    }
-
-    try {
-        const sessionDir = path.join(localExportBaseDir, sessionId);
-        if (await fs.pathExists(sessionDir)) {
-            await fs.remove(sessionDir);
-            logger.info(`[${opId}] Session directory cleaned successfully: ${sessionId}`);
-            res.status(200).send({message: 'Session cleaned up successfully'});
-        } else {
-            logger.info(`[${opId}] Session directory does not exist: ${sessionId}`);
-            res.status(404).send({message: 'Session directory not found'});
-        }
-    } catch (error) {
-        logger.error(`[${opId}] Failed to clean up session directory: ${error.message}`, {stack: error.stack});
-        res.status(500).send({message: 'Failed to clean up session directory'});
     }
 });
 
