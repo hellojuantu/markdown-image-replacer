@@ -19,7 +19,7 @@ else
   echo -e "${YELLOW}No Markdown Image Replacer containers found.${NC}"
 fi
 
-images=$(docker images -q --filter "reference=*markdown-image-replacer*")
+images=$(docker images -a -q --filter "reference=barrylogen/markdown-image-replacer*")
 if [[ -n "$images" ]]; then
   echo -e "${YELLOW}Removing images...${NC}"
   docker rmi $images
