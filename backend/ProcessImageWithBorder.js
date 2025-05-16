@@ -14,7 +14,7 @@ const config = {
 export async function processImageWithBorder(inputBuffer, enableCompression = false, apiKey = '', log) {
     log('[🔧] Starting image processing...');
     const img = await loadImage(inputBuffer);
-    log('[🎨] Image dimensions:', img.width, 'x', img.height);
+    log(`[🎨] Image width: ${img.width}, height:${img.height}`);
     const offset = config.imageOffset.value;
     const shadowOffset = config.shadowOffset.value;
 

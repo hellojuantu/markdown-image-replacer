@@ -571,6 +571,12 @@ app.post('/api/cleanup-temp-session', async (req, res) => {
     }
 });
 
+app.get('/api/health', async (req, res) => {
+    const msg = '🚀 Backend Server status is OK!!!';
+    logger.info(msg)
+    res.status(200).send(msg)
+})
+
 initializeDirectories();
 
 app.listen(PORT, () => {

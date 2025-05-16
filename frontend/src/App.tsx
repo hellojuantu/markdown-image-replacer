@@ -341,6 +341,8 @@ export default function MarkdownImageReplacer() {
     setCopyButtonText(t("logs.copy.button"));
 
     currentOperationIdRef.current = uuidv4();
+    const tempOperationId = currentOperationIdRef.current;
+
     log(
       `🚀 Processing started (Operation ID: ${currentOperationIdRef.current})`,
     );
@@ -426,118 +428,7 @@ export default function MarkdownImageReplacer() {
               continueReading = false;
             } else if (json.type === "localProcessingComplete") {
               log("✅ Local mode backend file processing completed.");
-              const mdContentForZip = json.content;
-              if (json.imageFiles && json.imageFiles.length > 0) {
-                log(
-                  `⏳ Preparing to download ${json.imageFiles.length} images from backend... (Session: ${json.sessionId})`,
-                );
-                const imagePromises = json.imageFiles.map(
-                  (imgFile: { filename: string; pathInZip: string }) =>
-                    fetch(
-                      `/api/temp-image?sessionId=${json.sessionId}&filename=${encodeURIComponent(imgFile.filename)}`,
-                    )
-                      .then((res: any) => {
-                        if (!res.ok) {
-                          log(
-                            `❌ Failed to download image ${imgFile.filename}: ${res.status} ${res.statusText}`,
-                          );
-                          return {
-                            pathInZip: imgFile.pathInZip,
-                            blob: null,
-                            error: true,
-                            filename: imgFile.filename,
-                          };
-                        }
-                        log(`👍 Image downloaded: ${imgFile.filename}`);
-                        return res.blob().then((blob: any) => ({
-                          pathInZip: imgFile.pathInZip,
-                          blob,
-                          error: false,
-                          filename: imgFile.filename,
-                        }));
-                      })
-                      .catch((err) => {
-                        console.error(
-                          `Workspace error for ${imgFile.filename}:`,
-                          err,
-                        );
-                        log(
-                          `❌ Downloading ${imgFile.filename} failed: ${err.message}`,
-                        );
-                        return {
-                          pathInZip: imgFile.pathInZip,
-                          blob: null,
-                          error: true,
-                          filename: imgFile.filename,
-                        };
-                      }),
-                );
-                Promise.all(imagePromises)
-                  .then((results) => {
-                    const successfullyFetchedImages = results.filter(
-                      (r) => r && !r.error && r.blob,
-                    ) as Array<{
-                      pathInZip: string;
-                      blob: Blob;
-                    }>;
-                    const erroredImagesCount = results.filter(
-                      (r) => r.error,
-                    ).length;
-                    if (erroredImagesCount > 0) {
-                      log(
-                        `⚠️ ${erroredImagesCount} images failed to download, they will not be included in ZIP.`,
-                      );
-                    }
-                    const baseMdFilename = originalFilename.endsWith(".md")
-                      ? originalFilename.slice(0, -3)
-                      : originalFilename;
-                    generateAndDownloadZip(
-                      mdContentForZip,
-                      successfullyFetchedImages,
-                      `${baseMdFilename}.md`,
-                      `${baseMdFilename}_local_export.zip`,
-                    );
-                  })
-                  .catch((err) =>
-                    log(
-                      `❌ Failed to download image group or generate ZIP: ${err.message}`,
-                    ),
-                  )
-                  .then(() => {
-                    if (json.sessionId && currentOperationIdRef.current) {
-                      fetch(
-                        `/api/cleanup-temp-session?sessionId=${json.sessionId}&operationId=${currentOperationIdRef.current}`,
-                        { method: "POST" },
-                      )
-                        .then((res) => {
-                          if (res.ok)
-                            log(
-                              "🧹 Backend temporary file cleanup request sent.",
-                            );
-                          else
-                            log(
-                              "⚠️ Backend temporary file cleanup request failed.",
-                            );
-                        })
-                        .catch((cleanupErr) =>
-                          log(
-                            `⚠️ Cleanup request failed: ${cleanupErr.message}`,
-                          ),
-                        );
-                    }
-                  });
-              } else {
-                log("ℹ️ No image files found, will only pack Markdown file.");
-                const baseMdFilename = originalFilename.endsWith(".md")
-                  ? originalFilename.slice(0, -3)
-                  : originalFilename;
-                await generateAndDownloadZip(
-                  mdContentForZip,
-                  [],
-                  `${baseMdFilename}.md`,
-                  `${baseMdFilename}_local_export.zip`,
-                );
-              }
+              handleLocalProcessingComplete(json, tempOperationId);
               continueReading = false;
             } else if (json.type === "error") {
               log(`❌ Backend error: ${json.message}`);
@@ -571,6 +462,113 @@ export default function MarkdownImageReplacer() {
       abortControllerRef.current = null;
       currentOperationIdRef.current = null;
       log("🔚 Frontend processing flow ended.");
+    }
+  };
+
+  const handleLocalProcessingComplete = (json: any, tempOperationId: any) => {
+    const mdContentForZip = json.content;
+    if (json.imageFiles && json.imageFiles.length > 0) {
+      log(
+        `⏳ Preparing to download ${json.imageFiles.length} images from backend... (Session: ${json.sessionId})`,
+      );
+      const imagePromises = json.imageFiles.map(
+        (imgFile: { filename: string; pathInZip: string }) =>
+          fetch(
+            `/api/temp-image?sessionId=${json.sessionId}&filename=${encodeURIComponent(imgFile.filename)}`,
+          )
+            .then((res: any) => {
+              if (!res.ok) {
+                log(
+                  `❌ Failed to download image ${imgFile.filename}: ${res.status} ${res.statusText}`,
+                );
+                return {
+                  pathInZip: imgFile.pathInZip,
+                  blob: null,
+                  error: true,
+                  filename: imgFile.filename,
+                };
+              }
+              log(`👍 Image downloaded: ${imgFile.filename}`);
+              return res.blob().then((blob: any) => ({
+                pathInZip: imgFile.pathInZip,
+                blob,
+                error: false,
+                filename: imgFile.filename,
+              }));
+            })
+            .catch((err) => {
+              console.error(`Workspace error for ${imgFile.filename}:`, err);
+              log(`❌ Downloading ${imgFile.filename} failed: ${err.message}`);
+              return {
+                pathInZip: imgFile.pathInZip,
+                blob: null,
+                error: true,
+                filename: imgFile.filename,
+              };
+            }),
+      );
+      Promise.all(imagePromises)
+        .then((results) => {
+          const successfullyFetchedImages = results.filter(
+            (r) => r && !r.error && r.blob,
+          ) as Array<{
+            pathInZip: string;
+            blob: Blob;
+          }>;
+          const erroredImagesCount = results.filter((r) => r.error).length;
+          if (erroredImagesCount > 0) {
+            log(
+              `⚠️ ${erroredImagesCount} images failed to download, they will not be included in ZIP.`,
+            );
+          }
+          const baseMdFilename = originalFilename.endsWith(".md")
+            ? originalFilename.slice(0, -3)
+            : originalFilename;
+          generateAndDownloadZip(
+            mdContentForZip,
+            successfullyFetchedImages,
+            `${baseMdFilename}.md`,
+            `${baseMdFilename}_local_export.zip`,
+          ).then(() => {
+            log("✅ ZIP file export completed successfully.");
+          });
+        })
+        .catch((err) =>
+          log(
+            `❌ Failed to download image group or generate ZIP: ${err.message}`,
+          ),
+        )
+        .then(() => {
+          if (json.sessionId && tempOperationId) {
+            fetch(
+              `/api/cleanup-temp-session?sessionId=${json.sessionId}&operationId=${tempOperationId}`,
+              { method: "POST" },
+            )
+              .then((res) => {
+                if (res.ok) {
+                  log("🧹 Backend temporary file cleanup request sent.");
+                } else {
+                  log("⚠️ Backend temporary file cleanup request failed.");
+                }
+              })
+              .catch((cleanupErr) =>
+                log(`⚠️ Cleanup request failed: ${cleanupErr.message}`),
+              );
+          }
+        });
+    } else {
+      log("ℹ️ No image files found, will only pack Markdown file.");
+      const baseMdFilename = originalFilename.endsWith(".md")
+        ? originalFilename.slice(0, -3)
+        : originalFilename;
+      generateAndDownloadZip(
+        mdContentForZip,
+        [],
+        `${baseMdFilename}.md`,
+        `${baseMdFilename}_local_export.zip`,
+      ).then(() => {
+        log("✅ ZIP file export completed successfully.");
+      });
     }
   };
 
