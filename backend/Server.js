@@ -288,6 +288,14 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
                     }
                 }
 
+                // custom replace
+                content = content.replace(/<\/?font[^>]*>/g, '');
+                content = content.replace(/(<br>[\s\n]){2}/g, "<br>");
+                content = content.replace(/(<br \/>[\n]?){2}/g, "<br />\n");
+                content = content.replace(/<br \/>/g, "\n");
+                content = content.replace(/<a name=".*?"><\/a>/g, "");
+                content = content.replace(/<div style="display:none">[\s\S]*?<\/div>/g, "");
+
                 sendSse('localProcessingComplete', {
                     content,
                     imageFiles: processedImageFiles,
