@@ -90,20 +90,20 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
                             ? t('processing.abort')
                             : (processingMode === 'github' ? t('processing.github.start') : t('processing.local.start')))}
                 </button>
+                {showViewResultButton && processingMode === 'github' && !loading && output && (
+                    <div className="view-result-button-container">
+                        <button
+                            className="btn btn-outline-primary"
+                            onClick={onViewResult}
+                        >
+                            {t('app.viewResult')}
+                        </button>
+                    </div>
+                )}
             </div>
             {processingMode === 'github' && configStatus !== 'ok' && !isConfigOpen && (
                 <div className="alert alert-warning">
                     {t('processing.github.configRequired')}
-                </div>
-            )}
-            {showViewResultButton && processingMode === 'github' && !loading && output && (
-                <div className="view-result-button-container">
-                    <button
-                        className="btn btn-outline-primary"
-                        onClick={onViewResult}
-                    >
-                        {t('app.viewResult')}
-                    </button>
                 </div>
             )}
         </section>

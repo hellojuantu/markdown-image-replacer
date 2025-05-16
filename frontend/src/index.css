@@ -551,7 +551,6 @@ body {
 
 /* Container for the "View Result" button */
 .view-result-button-container {
-    margin-top: 1.5rem;
     display: flex;
     justify-content: center; /* Or flex-end, flex-start */
 }
