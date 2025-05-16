@@ -1,474 +1,481 @@
 /* ---------- Global Resets & Base Styles ---------- */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    background-color: #f0f2f5; /* Lighter grey background */
-    color: #333;
-    line-height: 1.6;
-    font-size: 16px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+  background-color: #f0f2f5; /* Lighter grey background */
+  color: #333;
+  line-height: 1.6;
+  font-size: 16px;
 }
 
 /* ---------- Page Container & Header ---------- */
 .page-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 1rem; /* Reduced padding for small screens, more space on larger */
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem; /* Reduced padding for small screens, more space on larger */
 }
 
 .app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0.5rem;
-    margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .app-header h1 {
-    font-size: 1.75rem;
-    color: #1a2b4d;
-    font-weight: 600;
-    margin: 0;
-    display: flex;
-    align-items: center;
+  font-size: 1.75rem;
+  color: #1a2b4d;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 .app-header .flex {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .settings-btn-header {
-    font-size: 1rem; /* Text part */
-    padding: 0.5rem 1rem;
-    background-color: #fff;
-    border: 1px solid #d1d5db;
-    color: #374151;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  font-size: 1rem; /* Text part */
+  padding: 0.5rem 1rem;
+  background-color: #fff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .settings-btn-header:hover {
-    background-color: #f9fafb;
+  background-color: #f9fafb;
 }
 
 .btn-icon-text {
-    margin-left: 0.3rem;
+  margin-left: 0.3rem;
 }
-
 
 /* ---------- Card System ---------- */
 .card {
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    padding: 1.5rem; /* Consistent padding for cards */
-    margin-bottom: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem; /* Consistent padding for cards */
+  margin-bottom: 1.5rem;
 }
 
 .card h3 {
-    font-size: 1.25rem;
-    color: #1a2b4d;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.75rem;
+  font-size: 1.25rem;
+  color: #1a2b4d;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.75rem;
 }
 
 /* ---------- Form Elements ---------- */
 .form-group {
-    margin-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-    color: #4a5568;
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: #4a5568;
 }
 
 .form-group input[type="text"],
 .form-group input[type="password"],
 .form-group input[type="file"],
 .form-group textarea {
-    width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-size: 1rem;
-    color: #2d3748;
-    transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #2d3748;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 
 .form-group input[type="text"]:focus,
 .form-group input[type="password"]:focus,
 .form-group input[type="file"]:focus,
 .form-group textarea:focus {
-    outline: none;
-    border-color: #4a90e2; /* A nice blue for focus */
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+  outline: none;
+  border-color: #4a90e2; /* A nice blue for focus */
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
 }
 
 .form-group input[type="file"].file-input {
-    padding: 0.5rem; /* Adjust file input padding */
-    background-color: #f9fafb;
+  padding: 0.5rem; /* Adjust file input padding */
+  background-color: #f9fafb;
 }
 
 .form-group input[type="file"].file-input::file-selector-button {
-    margin-right: 0.75rem;
-    border: none;
-    background: #4a90e2;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    color: #fff;
-    cursor: pointer;
-    transition: background-color .2s ease-in-out;
+  margin-right: 0.75rem;
+  border: none;
+  background: #4a90e2;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 }
 
 .form-group input[type="file"].file-input::file-selector-button:hover {
-    background: #357abd;
+  background: #357abd;
 }
 
-
 .checkbox-group {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .checkbox-group input[type="checkbox"] {
-    margin-right: 0.5rem;
-    height: 1.1em;
-    width: 1.1em;
-    accent-color: #4a90e2;
+  margin-right: 0.5rem;
+  height: 1.1em;
+  width: 1.1em;
+  accent-color: #4a90e2;
 }
 
 .checkbox-group label {
-    margin-bottom: 0; /* Override default form-group label margin */
-    font-weight: normal; /* Less emphasis than field labels */
-    font-size: 0.95rem;
+  margin-bottom: 0; /* Override default form-group label margin */
+  font-weight: normal; /* Less emphasis than field labels */
+  font-size: 0.95rem;
 }
 
 /* ---------- Buttons ---------- */
 .btn {
-    display: inline-flex; /* For icon alignment */
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    border-radius: 6px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s, box-shadow 0.2s, transform 0.1s;
-    text-decoration: none; /* For potential <a> as button */
-    white-space: nowrap;
+  display: inline-flex; /* For icon alignment */
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    box-shadow 0.2s,
+    transform 0.1s;
+  text-decoration: none; /* For potential <a> as button */
+  white-space: nowrap;
 }
 
 .btn:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .btn:active {
-    transform: translateY(1px);
+  transform: translateY(1px);
 }
 
 .btn-primary {
-    background-color: #4a90e2; /* Primary blue */
-    color: #fff;
+  background-color: #4a90e2; /* Primary blue */
+  color: #fff;
 }
 
 .btn-primary:hover {
-    background-color: #357abd; /* Darker blue on hover */
+  background-color: #357abd; /* Darker blue on hover */
 }
 
 .btn-primary:disabled {
-    background-color: #a0aec0; /* Grey for disabled */
-    color: #e2e8f0;
-    cursor: not-allowed;
-    box-shadow: none;
+  background-color: #a0aec0; /* Grey for disabled */
+  color: #e2e8f0;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 .btn-danger {
-    background-color: #e53e3e; /* Red for danger/cancel */
-    color: #fff;
+  background-color: #e53e3e; /* Red for danger/cancel */
+  color: #fff;
 }
 
 .btn-danger:hover {
-    background-color: #c53030; /* Darker red on hover */
+  background-color: #c53030; /* Darker red on hover */
 }
 
 .btn-icon {
-    background: transparent;
-    border: 1px solid #e2e8f0;
-    color: #4a5568;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    min-width: 60px;
+  background: transparent;
+  border: 1px solid #e2e8f0;
+  color: #4a5568;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 60px;
 }
 
 .btn-icon:hover {
-    background-color: #f7fafc;
-    border-color: #cbd5e0;
-    color: #2d3748;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: #f7fafc;
+  border-color: #cbd5e0;
+  color: #2d3748;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .btn-icon:active {
-    transform: translateY(0);
-    box-shadow: none;
+  transform: translateY(0);
+  box-shadow: none;
 }
 
 .action-buttons {
-    display: flex;
-    gap: 1rem; /* Space between buttons */
-    margin-top: 1rem;
+  display: flex;
+  gap: 1rem; /* Space between buttons */
+  margin-top: 1rem;
 }
 
 .action-buttons .btn {
-    flex-grow: 1; /* Allow buttons to grow if needed */
+  flex-grow: 1; /* Allow buttons to grow if needed */
 }
-
 
 /* ---------- Modal Styling ---------- */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6); /* Darker overlay */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-    padding: 1rem; /* Allow for small modals on small screens */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6); /* Darker overlay */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem; /* Allow for small modals on small screens */
 }
 
 .modal-content {
-    background: #fff;
-    border-radius: 8px;
-    width: 100%;
-    max-width: 500px; /* Max width for the modal */
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-    max-height: 90vh; /* Max height to prevent overflow */
+  background: #fff;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px; /* Max width for the modal */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* Max height to prevent overflow */
 }
 
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .modal-header h2 {
-    font-size: 1.25rem;
-    color: #1a2b4d;
-    font-weight: 600;
+  font-size: 1.25rem;
+  color: #1a2b4d;
+  font-weight: 600;
 }
 
 .modal-close-btn {
-    font-size: 1.5rem; /* Larger close icon */
-    color: #718096;
+  font-size: 1.5rem; /* Larger close icon */
+  color: #718096;
 }
 
 .modal-close-btn:hover {
-    color: #2d3748;
+  color: #2d3748;
 }
 
-
 .modal-body {
-    padding: 1.5rem;
-    padding-bottom: 0;
-    overflow-y: auto; /* Scrollable body if content exceeds max-height */
+  padding: 1.5rem;
+  padding-bottom: 0;
+  overflow-y: auto; /* Scrollable body if content exceeds max-height */
 }
 
 .modal-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid #e2e8f0;
-    display: flex;
-    flex-direction: column; /* Stack button and messages */
-    gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column; /* Stack button and messages */
+  gap: 0.75rem;
 }
 
 .modal-footer .btn {
-    width: 100%; /* Full width button in footer */
+  width: 100%; /* Full width button in footer */
 }
-
 
 /* ---------- Alerts / Messages ---------- */
 .alert {
-    padding: 0.75rem 1rem;
-    margin-top: 0.5rem; /* Space from button */
-    border-radius: 4px;
-    font-size: 0.9rem;
-    border: 1px solid transparent;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem; /* Space from button */
+  border-radius: 4px;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
 }
 
 .alert-error {
-    background-color: #fef2f2;
-    color: #991b1b;
-    border-color: #fecaca;
+  background-color: #fef2f2;
+  color: #991b1b;
+  border-color: #fecaca;
 }
 
 .alert-success {
-    background-color: #f0fdf4;
-    color: #166534;
-    border-color: #bbf7d0;
+  background-color: #f0fdf4;
+  color: #166534;
+  border-color: #bbf7d0;
 }
 
 .alert-warning {
-    background-color: #fffbeb;
-    color: #92400e;
-    border-color: #fde68a;
-    margin-top: 1rem; /* For the warning in controls-card */
+  background-color: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+  margin-top: 1rem; /* For the warning in controls-card */
 }
-
 
 /* ---------- Log & Output Styling ---------- */
 .log-container {
-    background-color: #f8f9fa; /* Slightly off-white for logs */
-    border: 1px solid #e2e8f0;
-    border-radius: 6px;
-    padding: 1rem;
-    max-height: 300px; /* Increased max height */
-    overflow-y: auto;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    font-size: 0.875rem; /* Smaller font for logs */
-    color: #495057; /* Softer black for logs */
+  background-color: #f8f9fa; /* Slightly off-white for logs */
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 1rem;
+  max-height: 300px; /* Increased max height */
+  overflow-y: auto;
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 0.875rem; /* Smaller font for logs */
+  color: #495057; /* Softer black for logs */
 }
 
 .log-entry {
-    padding: 0.1rem 0;
-    white-space: pre-wrap; /* Keep newlines from backend */
-    word-break: break-all; /* Break long strings */
+  padding: 0.1rem 0;
+  white-space: pre-wrap; /* Keep newlines from backend */
+  word-break: break-all; /* Break long strings */
 }
 
-.log-entry span { /* Timestamp */
-    color: #6c757d;
-    margin-right: 0.5em;
-    font-size: 0.8em;
+.log-entry span {
+  /* Timestamp */
+  color: #6c757d;
+  margin-right: 0.5em;
+  font-size: 0.8em;
 }
 
 .output-container textarea {
-    width: 100%;
-    min-height: 200px; /* Minimum height */
-    padding: 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    font-size: 0.9rem;
-    background-color: #f8f9fa;
-    color: #212529;
-    resize: vertical; /* Allow vertical resize */
+  width: 100%;
+  min-height: 200px; /* Minimum height */
+  padding: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  color: #212529;
+  resize: vertical; /* Allow vertical resize */
 }
 
 /* ---------- Specific Layouts ---------- */
 .controls-card .file-upload-group {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .main-content {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 /* Responsive adjustments */
 @media (max-width: 600px) {
-    .app-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
+  .app-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
 
-    .settings-btn-header {
-        align-self: flex-end;
-    }
+  .settings-btn-header {
+    align-self: flex-end;
+  }
 
-    .action-buttons {
-        flex-direction: column;
-    }
+  .action-buttons {
+    flex-direction: column;
+  }
 
-    .page-container {
-        padding: 0.5rem;
-    }
+  .page-container {
+    padding: 0.5rem;
+  }
 
-    .card {
-        padding: 1rem;
-    }
+  .card {
+    padding: 1rem;
+  }
 
-    .modal-body, .modal-header, .modal-footer {
-        padding: 1rem;
-    }
+  .modal-body,
+  .modal-header,
+  .modal-footer {
+    padding: 1rem;
+  }
 }
 
 .action-buttons .action-toggle-btn {
-    flex-grow: 2; /* Make it proportionally larger than reset if desired */
+  flex-grow: 2; /* Make it proportionally larger than reset if desired */
 }
 
 .action-buttons .reset-btn {
-    flex-grow: 1;
-    background-color: #6c757d; /* A more neutral secondary color for reset */
-    color: white;
+  flex-grow: 1;
+  background-color: #6c757d; /* A more neutral secondary color for reset */
+  color: white;
 }
 
 .action-buttons .reset-btn:hover {
-    background-color: #5a6268;
+  background-color: #5a6268;
 }
 
 .action-buttons .reset-btn:disabled {
-    background-color: #adb5bd;
-    color: #e9ecef;
+  background-color: #adb5bd;
+  color: #e9ecef;
 }
 
 /* Styles for Mode Selector */
 .mode-selector-group {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: #f9fafb; /* Slightly different background for this group */
-    border: 1px solid #e5e7eb;
-    border-radius: 6px;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f9fafb; /* Slightly different background for this group */
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
 }
 
-.mode-selector-group .mode-label { /* Keep consistent with other labels if needed */
-    display: block;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-    font-size: 0.9rem;
-    color: #4a5568;
+.mode-selector-group .mode-label {
+  /* Keep consistent with other labels if needed */
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  color: #4a5568;
 }
 
 .radio-group {
-    display: flex;
-    flex-direction: column; /* Stack radios vertically */
-    gap: 0.75rem; /* Space between radio options */
+  display: flex;
+  flex-direction: column; /* Stack radios vertically */
+  gap: 0.75rem; /* Space between radio options */
 }
 
 .radio-group label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    font-size: 0.95rem;
-    color: #374151;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #374151;
 }
 
 .radio-group input[type="radio"] {
-    margin-right: 0.5rem;
-    accent-color: #4a90e2; /* Match your primary color */
-    /* For custom styling if needed:
+  margin-right: 0.5rem;
+  accent-color: #4a90e2; /* Match your primary color */
+  /* For custom styling if needed:
     -webkit-appearance: none;
     appearance: none;
     background-color: #fff;
@@ -498,82 +505,87 @@ body {
 
 /* Modal Description */
 .modal-description {
-    font-size: 0.9rem;
-    color: #4a5568;
-    margin-bottom: 1.25rem;
-    padding: 0.75rem;
-    background-color: #f0f9ff; /* Light blueish background */
-    border-left: 4px solid #3b82f6; /* Primary color accent */
-    border-radius: 4px;
+  font-size: 0.9rem;
+  color: #4a5568;
+  margin-bottom: 1.25rem;
+  padding: 0.75rem;
+  background-color: #f0f9ff; /* Light blueish background */
+  border-left: 4px solid #3b82f6; /* Primary color accent */
+  border-radius: 4px;
 }
 
 /* Ensure log messages with timestamps are aligned nicely */
-.log-entry span { /* Timestamp */
-    color: #6c757d;
-    margin-right: 0.75em; /* Increased spacing */
-    font-size: 0.8em;
-    display: inline-block; /* Prevents timestamp from wrapping weirdly with message */
-    /* min-width: 70px; /* Adjust as needed for your time format */
+.log-entry span {
+  /* Timestamp */
+  color: #6c757d;
+  margin-right: 0.75em; /* Increased spacing */
+  font-size: 0.8em;
+  display: inline-block; /* Prevents timestamp from wrapping weirdly with message */
+  /* min-width: 70px; /* Adjust as needed for your time format */
 }
-
 
 /* Output Modal Specific Styles */
 .output-display-modal .modal-body {
-    padding: 0; /* Remove padding if textarea takes full space */
+  padding: 0; /* Remove padding if textarea takes full space */
 }
 
 .output-modal-textarea {
-    width: 100%;
-    height: 40vh; /* Adjust as needed */
-    min-height: 200px;
-    padding: 1rem;
-    border: none; /* Remove border if modal provides it */
-    border-radius: 0; /* Remove radius if modal provides it */
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
-    font-size: 0.9rem;
-    background-color: #f8f9fa;
-    color: #212529;
-    resize: none; /* Usually not resizable in a modal */
-    box-shadow: none; /* Remove focus shadow if not desired */
-    outline: none; /* Remove focus outline */
+  width: 100%;
+  height: 40vh; /* Adjust as needed */
+  min-height: 200px;
+  padding: 1rem;
+  border: none; /* Remove border if modal provides it */
+  border-radius: 0; /* Remove radius if modal provides it */
+  font-family:
+    "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 0.9rem;
+  background-color: #f8f9fa;
+  color: #212529;
+  resize: none; /* Usually not resizable in a modal */
+  box-shadow: none; /* Remove focus shadow if not desired */
+  outline: none; /* Remove focus outline */
 }
 
 .output-display-modal .modal-footer {
-    justify-content: flex-end; /* Align buttons to the right */
-    gap: 0.75rem;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 0.75rem;
 }
 
 .output-display-modal .modal-footer .btn {
-    width: auto; /* Allow buttons to size based on content */
-    min-width: 100px;
+  width: auto; /* Allow buttons to size based on content */
+  min-width: 100px;
 }
-
 
 /* Container for the "View Result" button */
 .view-result-button-container {
-    display: flex;
-    justify-content: center; /* Or flex-end, flex-start */
+  display: flex;
+  justify-content: center; /* Or flex-end, flex-start */
 }
 
 .btn-outline-primary {
-    background-color: transparent;
-    border: 1px solid #4a90e2; /* Your primary color */
-    color: #4a90e2;
+  background-color: transparent;
+  border: 1px solid #4a90e2; /* Your primary color */
+  color: #4a90e2;
 }
 
 .btn-outline-primary:hover {
-    background-color: rgba(74, 144, 226, 0.1); /* Light primary color background */
-    color: #357abd;
+  background-color: rgba(
+    74,
+    144,
+    226,
+    0.1
+  ); /* Light primary color background */
+  color: #357abd;
 }
 
 .github-link {
-    display: flex;
-    align-items: center;
-    color: #24292e;
-    transition: transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  color: #24292e;
+  transition: transform 0.2s ease;
 }
 
 .github-link:hover {
-    transform: scale(1.1);
-    color: #0366d6;
+  transform: scale(1.1);
+  color: #0366d6;
 }

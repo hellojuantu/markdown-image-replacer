@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": [
-      "DOM",
-      "ES2017"
-    ],
+    "lib": ["DOM", "ES2017"],
     "jsx": "react-jsx",
     "module": "ESNext",
     "moduleResolution": "node",
@@ -15,7 +12,5 @@
     "resolveJsonModule": true,
     "types": ["node"]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
