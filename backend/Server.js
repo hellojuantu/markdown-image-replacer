@@ -250,6 +250,14 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
                 });
             }
 
+            // custom replace
+            content = content.replace(/<\/?font[^>]*>/g, '');
+            content = content.replace(/(<br>[\s\n]){2}/g, "<br>");
+            content = content.replace(/(<br \/>[\n]?){2}/g, "<br />\n");
+            content = content.replace(/<br \/>/g, "\n");
+            content = content.replace(/<a name=".*?"><\/a>/g, "");
+            content = content.replace(/<div style="display:none">[\s\S]*?<\/div>/g, "");
+
             if (processingMode === 'local') {
                 activeSessionIdForLocal = crypto.randomUUID();
                 const sessionImagesDir = path.join(localExportBaseDir, activeSessionIdForLocal, 'images');
@@ -287,14 +295,6 @@ app.post('/api/replace', upload.single('file'), async (req, res) => {
                         logger.error(`[${operationId}] Error processing local image ${img.filenameWithExt}: ${e.message}`, {stack: e.stack});
                     }
                 }
-
-                // custom replace
-                content = content.replace(/<\/?font[^>]*>/g, '');
-                content = content.replace(/(<br>[\s\n]){2}/g, "<br>");
-                content = content.replace(/(<br \/>[\n]?){2}/g, "<br />\n");
-                content = content.replace(/<br \/>/g, "\n");
-                content = content.replace(/<a name=".*?"><\/a>/g, "");
-                content = content.replace(/<div style="display:none">[\s\S]*?<\/div>/g, "");
 
                 sendSse('localProcessingComplete', {
                     content,
