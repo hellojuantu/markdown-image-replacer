@@ -58,7 +58,7 @@
    ```bash
    git clone https://github.com/hellojuantu/markdown-image-replacer.git
    cd markdown-image-replacer/docker
-   echo 'APP_VERSION=0.0.1' > .env
+   echo 'APP_VERSION=0.0.2' > .env
    docker compose up --build -d
    ```
 3. 访问：`http://localhost:13001`
