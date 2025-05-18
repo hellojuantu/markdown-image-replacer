@@ -10,22 +10,22 @@ echo -e "${YELLOW}Starting uninstallation of Markdown Image Replacer...${NC}"
 
 containers=$(docker ps -a -q --filter "name=markdown-image-replacer")
 if [[ -n "$containers" ]]; then
-  echo -e "${YELLOW}Stopping containers...${NC}"
+  echo -e "${YELLOW}[WARN] Stopping containers...${NC}"
   docker stop $containers
-  echo -e "${YELLOW}Removing containers...${NC}"
+  echo -e "${YELLOW}[WARN] Removing containers...${NC}"
   docker rm $containers
-  echo -e "${GREEN}Containers stopped and removed.${NC}"
+  echo -e "${GREEN}[INFO] Containers stopped and removed.${NC}"
 else
-  echo -e "${YELLOW}No Markdown Image Replacer containers found.${NC}"
+  echo -e "${YELLOW}[WARN] No Markdown Image Replacer containers found.${NC}"
 fi
 
 images=$(docker images -a -q --filter "reference=barrylogen/markdown-image-replacer*")
 if [[ -n "$images" ]]; then
-  echo -e "${YELLOW}Removing images...${NC}"
+  echo -e "${YELLOW}[WARN] Removing images...${NC}"
   docker rmi $images
-  echo -e "${GREEN}Images removed.${NC}"
+  echo -e "${GREEN}[INFO] Images removed.${NC}"
 else
-  echo -e "${YELLOW}No Markdown Image Replacer images found.${NC}"
+  echo -e "${YELLOW}[WARN] No Markdown Image Replacer images found.${NC}"
 fi
 
 echo -e "${GREEN}Uninstallation completed!${NC}"

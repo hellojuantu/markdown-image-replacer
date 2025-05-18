@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 COMPOSE_FILE_SOURCE="https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/docker-compose.yml"
 VERSION_FILE_SOURCE="https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/version"
