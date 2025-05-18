@@ -42,6 +42,8 @@
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
 ```
+访问：http://localhost:13001
+
 
 ### 一键升级
 
