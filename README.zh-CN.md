@@ -40,7 +40,7 @@
 ### 一键安装
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
+/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
 ```
 访问：http://localhost:13001
 
@@ -48,13 +48,13 @@
 ### 一键升级
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/upgrade.sh)"
+/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/upgrade.sh)"
 ```
 
 ### 一键卸载
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/uninstall.sh)"
+/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/uninstall.sh)"
 ```
 
 ## 手动安装
