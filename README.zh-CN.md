@@ -43,6 +43,12 @@
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
 ```
 
+### 一键升级
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/upgrade.sh)"
+```
+
 ### 一键卸载
 
 ```bash

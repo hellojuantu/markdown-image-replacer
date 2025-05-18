@@ -43,6 +43,12 @@ English | [中文](README.zh-CN.md)
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
 ```
 
+### One-Click Upgrade
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/upgrade.sh)"
+```
+
 ### One-Click Uninstallation
 
 ```bash
