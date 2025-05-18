@@ -7,8 +7,22 @@ export interface Config {
   tinifyKey: string;
 }
 
-export type ProcessingMode = "github" | "local";
-export type ConfigStatus = "unknown" | "ok" | "error";
+export const ProcessingModeEnum = {
+  GITHUB: "github",
+  LOCAL: "local",
+} as const;
+
+export type ProcessingMode =
+  (typeof ProcessingModeEnum)[keyof typeof ProcessingModeEnum];
+
+export const ConfigStatusEnum = {
+  UNKNOWN: "unknown",
+  OK: "ok",
+  ERROR: "error",
+} as const;
+
+export type ConfigStatus =
+  (typeof ConfigStatusEnum)[keyof typeof ConfigStatusEnum];
 
 export const defaultConfigValues: Config = {
   username: "",

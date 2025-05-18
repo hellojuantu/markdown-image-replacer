@@ -1,9 +1,15 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import JSZip from "jszip";
 import { saveAs } from "file-saver";
 import { v4 as uuidv4 } from "uuid";
 import "./index.css";
-import { ProcessingMode, defaultConfigValues } from "./types";
+import {
+  ConfigStatus,
+  ConfigStatusEnum,
+  defaultConfigValues,
+  ProcessingMode,
+  ProcessingModeEnum,
+} from "./types";
 import SettingsModal from "./components/SettingsModal";
 import OutputModal from "./components/OutputModal";
 import LogDisplay from "./components/LogDisplay";
@@ -16,8 +22,8 @@ export default function MarkdownImageReplacer() {
   const { t } = useTranslation();
   const [config, setConfig] = useState(defaultConfigValues);
   const [isConfigOpen, setIsConfigOpen] = useState(false);
-  const [configStatus, setConfigStatus] = useState<"unknown" | "ok" | "error">(
-    "unknown",
+  const [configStatus, setConfigStatus] = useState<ConfigStatus>(
+    ConfigStatusEnum.UNKNOWN,
   );
   const [checkingConfig, setCheckingConfig] = useState(false);
   const [configError, setConfigError] = useState<string>("");
@@ -36,8 +42,9 @@ export default function MarkdownImageReplacer() {
   const currentOperationIdRef = useRef<string | null>(null); // To store current operation ID
 
   const [userHasScrolled, setUserHasScrolled] = useState(false);
-  const [processingMode, setProcessingMode] =
-    useState<ProcessingMode>("github");
+  const [processingMode, setProcessingMode] = useState<ProcessingMode>(
+    ProcessingModeEnum.GITHUB,
+  );
   const [isOutputModalOpen, setIsOutputModalOpen] = useState(false);
   const [showViewResultButton, setShowViewResultButton] = useState(false);
   const [copyButtonText, setCopyButtonText] = useState(t("logs.copy.button"));
@@ -54,8 +61,8 @@ export default function MarkdownImageReplacer() {
 
   const updateConfigStatusBasedOnMode = useCallback(
     (mode: ProcessingMode, currentConfig: typeof defaultConfigValues) => {
-      if (mode === "local") {
-        setConfigStatus("ok");
+      if (mode === ProcessingModeEnum.LOCAL) {
+        setConfigStatus(ConfigStatusEnum.OK);
         setConfigError("");
       } else {
         if (
@@ -64,9 +71,9 @@ export default function MarkdownImageReplacer() {
           currentConfig.repo &&
           currentConfig.branch
         ) {
-          setConfigStatus("ok");
+          setConfigStatus(ConfigStatusEnum.OK);
         } else {
-          setConfigStatus("unknown");
+          setConfigStatus(ConfigStatusEnum.UNKNOWN);
         }
       }
     },
@@ -87,17 +94,17 @@ export default function MarkdownImageReplacer() {
       }
     }
     if (
-      processingMode === "github" &&
+      processingMode === ProcessingModeEnum.GITHUB &&
       (!loadedConfig.username ||
         !loadedConfig.token ||
         !loadedConfig.repo ||
         !loadedConfig.branch)
     ) {
-      setConfigStatus("unknown");
-    } else if (processingMode === "local") {
-      setConfigStatus("ok");
+      setConfigStatus(ConfigStatusEnum.UNKNOWN);
+    } else if (processingMode === ProcessingModeEnum.LOCAL) {
+      setConfigStatus(ConfigStatusEnum.OK);
     } else {
-      setConfigStatus("ok");
+      setConfigStatus(ConfigStatusEnum.OK);
     }
   }, [processingMode]);
 
@@ -158,7 +165,7 @@ export default function MarkdownImageReplacer() {
 
   const saveConfigAndValidateForGitHub = async () => {
     setConfigError("");
-    if (processingMode === "local") {
+    if (processingMode === ProcessingModeEnum.LOCAL) {
       const localConfigToSave = {
         enableCompression: config.enableCompression,
         tinifyKey: config.tinifyKey,
@@ -168,18 +175,18 @@ export default function MarkdownImageReplacer() {
         JSON.stringify(localConfigToSave),
       );
       setIsConfigOpen(false);
-      setConfigStatus("ok");
+      setConfigStatus(ConfigStatusEnum.OK);
       log("🔧 Local mode settings saved (compression preference).");
       return;
     }
     if (!config.username || !config.repo || !config.branch || !config.token) {
       setConfigError(t("settings.github.error.emptyFields"));
-      setConfigStatus("error");
+      setConfigStatus(ConfigStatusEnum.ERROR);
       return;
     }
     if (config.enableCompression && !config.tinifyKey) {
       setConfigError(t("settings.compression.error.emptyKey"));
-      setConfigStatus("error");
+      setConfigStatus(ConfigStatusEnum.ERROR);
       return;
     }
     setCheckingConfig(true);
@@ -189,7 +196,7 @@ export default function MarkdownImageReplacer() {
         { headers: { Authorization: `token ${config.token}` } },
       );
       if (!repoResp.ok) {
-        setConfigStatus("error");
+        setConfigStatus(ConfigStatusEnum.ERROR);
         setConfigError(
           t("settings.github.error.noAccess", { status: repoResp.status }),
         );
@@ -200,7 +207,7 @@ export default function MarkdownImageReplacer() {
         { headers: { Authorization: `token ${config.token}` } },
       );
       if (!branchResp.ok) {
-        setConfigStatus("error");
+        setConfigStatus(ConfigStatusEnum.ERROR);
         setConfigError(
           t("settings.github.error.branchNotFound", {
             branch: config.branch,
@@ -209,12 +216,12 @@ export default function MarkdownImageReplacer() {
         );
         return;
       }
-      setConfigStatus("ok");
+      setConfigStatus(ConfigStatusEnum.OK);
       localStorage.setItem("mdUploaderSettings", JSON.stringify(config));
       setIsConfigOpen(false);
       log("✅ GitHub configuration saved and verified.");
     } catch (e: any) {
-      setConfigStatus("error");
+      setConfigStatus(ConfigStatusEnum.ERROR);
       setConfigError(
         t("settings.github.error.apiConnection", { error: e.message }),
       );
@@ -225,9 +232,9 @@ export default function MarkdownImageReplacer() {
 
   const logProcessingParameters = useCallback(() => {
     log(
-      `⚙️ Processing mode: ${processingMode === "github" ? "Upload to GitHub" : "Download local ZIP"}`,
+      `⚙️ Processing mode: ${processingMode === ProcessingModeEnum.GITHUB ? "Upload to GitHub" : "Download local ZIP"}`,
     );
-    if (processingMode === "github") {
+    if (processingMode === ProcessingModeEnum.GITHUB) {
       log(`🔧 GitHub username: ${config.username}`);
       log(`🔧 GitHub repository: ${config.repo}`);
       log(`🔧 GitHub branch: ${config.branch}`);
@@ -321,7 +328,10 @@ export default function MarkdownImageReplacer() {
   };
 
   const handleSubmitProcessing = async () => {
-    if (processingMode === "github" && configStatus !== "ok") {
+    if (
+      processingMode === ProcessingModeEnum.GITHUB &&
+      configStatus !== ConfigStatusEnum.OK
+    ) {
       setConfigError(t("settings.github.error.invalidConfig"));
       setIsConfigOpen(true);
       return;
@@ -356,7 +366,7 @@ export default function MarkdownImageReplacer() {
 
     formData.append("enableCompression", String(config.enableCompression));
     formData.append("tinifyKey", config.tinifyKey || "");
-    if (processingMode === "github") {
+    if (processingMode === ProcessingModeEnum.GITHUB) {
       formData.append("username", config.username);
       formData.append("repo", config.repo);
       formData.append("branch", config.branch);
@@ -421,14 +431,24 @@ export default function MarkdownImageReplacer() {
             if (json.type === "log") {
               log(json.message);
             } else if (json.type === "githubProcessingDone") {
-              log("✅ GitHub processing completed successfully!");
               setOutput(json.content);
               setShowViewResultButton(true);
               setIsOutputModalOpen(true);
+              if (json.sessionId && tempOperationId && processingMode) {
+                cleanupTempSession(
+                  json.sessionId,
+                  tempOperationId,
+                  processingMode,
+                );
+              }
               continueReading = false;
             } else if (json.type === "localProcessingComplete") {
               log("✅ Local mode backend file processing completed.");
-              handleLocalProcessingComplete(json, tempOperationId);
+              handleLocalProcessingComplete(
+                json,
+                tempOperationId,
+                processingMode,
+              );
               continueReading = false;
             } else if (json.type === "error") {
               log(`❌ Backend error: ${json.message}`);
@@ -465,7 +485,11 @@ export default function MarkdownImageReplacer() {
     }
   };
 
-  const handleLocalProcessingComplete = (json: any, tempOperationId: any) => {
+  const handleLocalProcessingComplete = (
+    json: any,
+    tempOperationId: any,
+    processingMode: string,
+  ) => {
     const mdContentForZip = json.content;
     if (json.imageFiles && json.imageFiles.length > 0) {
       log(
@@ -539,21 +563,8 @@ export default function MarkdownImageReplacer() {
           ),
         )
         .then(() => {
-          if (json.sessionId && tempOperationId) {
-            fetch(
-              `/api/cleanup-temp-session?sessionId=${json.sessionId}&operationId=${tempOperationId}`,
-              { method: "POST" },
-            )
-              .then((res) => {
-                if (res.ok) {
-                  log("🧹 Backend temporary file cleanup request sent.");
-                } else {
-                  log("⚠️ Backend temporary file cleanup request failed.");
-                }
-              })
-              .catch((cleanupErr) =>
-                log(`⚠️ Cleanup request failed: ${cleanupErr.message}`),
-              );
+          if (json.sessionId && tempOperationId && processingMode) {
+            cleanupTempSession(json.sessionId, tempOperationId, processingMode);
           }
         });
     } else {
@@ -569,6 +580,29 @@ export default function MarkdownImageReplacer() {
       ).then(() => {
         log("✅ ZIP file export completed successfully.");
       });
+    }
+  };
+
+  const cleanupTempSession = (
+    sessionId: string,
+    tempOperationId: string,
+    processingMode: string,
+  ) => {
+    if (sessionId && tempOperationId) {
+      fetch(
+        `/api/cleanup-temp-session?sessionId=${sessionId}&operationId=${tempOperationId}&processingMode=${processingMode}`,
+        { method: "POST" },
+      )
+        .then((res) => {
+          if (res.ok) {
+            log("🧹 Backend temporary file cleanup request sent.");
+          } else {
+            log("⚠️ Backend temporary file cleanup request failed.");
+          }
+        })
+        .catch((cleanupErr) =>
+          log(`⚠️ Cleanup request failed: ${cleanupErr.message}`),
+        );
     }
   };
 
@@ -628,7 +662,7 @@ export default function MarkdownImageReplacer() {
   const handleProcessingModeChange = (mode: ProcessingMode) => {
     setProcessingMode(mode);
     updateConfigStatusBasedOnMode(mode, config); // Ensure config status is updated immediately
-    if (mode === "local") {
+    if (mode === ProcessingModeEnum.LOCAL) {
       setConfigError(""); // Clear GitHub specific errors if switching to local
     } else {
       // When switching to GitHub, re-evaluate if settings are open if config is not 'ok'
@@ -701,7 +735,9 @@ export default function MarkdownImageReplacer() {
         configStatus={configStatus}
       />
       <OutputModal
-        isOpen={isOutputModalOpen && processingMode === "github"}
+        isOpen={
+          isOutputModalOpen && processingMode === ProcessingModeEnum.GITHUB
+        }
         onClose={() => setIsOutputModalOpen(false)}
         outputContent={output}
         onCopy={handleCopyOutput}
@@ -713,11 +749,11 @@ export default function MarkdownImageReplacer() {
           onProcessingModeChange={handleProcessingModeChange}
           onFileChange={handleFileChange}
           fileInputRef={fileInputRef}
-          onMainAction={() => {
+          onMainAction={async () => {
             if (loading && !isAborting) {
-              handleCancelProcessing();
+              await handleCancelProcessing();
             } else if (!loading) {
-              handleSubmitProcessing();
+              await handleSubmitProcessing();
             }
           }}
           loading={loading}

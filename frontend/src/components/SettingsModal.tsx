@@ -1,6 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Config, ProcessingMode, ConfigStatus } from "../types";
+import {
+  Config,
+  ConfigStatus,
+  ProcessingMode,
+  ProcessingModeEnum,
+} from "../types";
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -44,11 +49,11 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         </header>
         <div className="modal-body">
           <p className="modal-description">
-            {processingMode === "github"
+            {processingMode === ProcessingModeEnum.GITHUB
               ? t("settings.github.description")
               : t("settings.local.description")}
           </p>
-          {processingMode === "github" && (
+          {processingMode === ProcessingModeEnum.GITHUB && (
             <>
               <div className="form-group">
                 <label htmlFor="username">
@@ -144,14 +149,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
             onClick={onSave}
             disabled={
               checkingConfig ||
-              (processingMode === "github" &&
+              (processingMode === ProcessingModeEnum.GITHUB &&
                 (!config.username || !config.repo || !config.token)) ||
               (config.enableCompression && !config.tinifyKey)
             }
           >
             {checkingConfig
               ? t("settings.saving")
-              : processingMode === "github"
+              : processingMode === ProcessingModeEnum.GITHUB
                 ? t("settings.github.save")
                 : t("settings.compression.save")}
           </button>

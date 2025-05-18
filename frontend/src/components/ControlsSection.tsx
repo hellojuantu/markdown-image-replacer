@@ -1,6 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ProcessingMode, ConfigStatus } from "../types";
+import {
+  ConfigStatus,
+  ConfigStatusEnum,
+  ProcessingMode,
+  ProcessingModeEnum,
+} from "../types";
 
 interface ControlsSectionProps {
   processingMode: ProcessingMode;
@@ -46,7 +51,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
               id="modeGithub"
               name="processingMode"
               value="github"
-              checked={processingMode === "github"}
+              checked={processingMode === ProcessingModeEnum.GITHUB}
               onChange={() => onProcessingModeChange("github")}
               disabled={loading || isAborting}
             />
@@ -58,7 +63,7 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
               id="modeLocal"
               name="processingMode"
               value="local"
-              checked={processingMode === "local"}
+              checked={processingMode === ProcessingModeEnum.LOCAL}
               onChange={() => onProcessingModeChange("local")}
               disabled={loading || isAborting}
             />
@@ -85,19 +90,21 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
           disabled={
             isAborting ||
             (!loading &&
-              (!file || (processingMode === "github" && configStatus !== "ok")))
+              (!file ||
+                (processingMode === ProcessingModeEnum.GITHUB &&
+                  configStatus !== ConfigStatusEnum.OK)))
           }
         >
           {isAborting
             ? t("processing.aborting")
             : loading
               ? t("processing.abort")
-              : processingMode === "github"
+              : processingMode === ProcessingModeEnum.GITHUB
                 ? t("processing.github.start")
                 : t("processing.local.start")}
         </button>
         {showViewResultButton &&
-          processingMode === "github" &&
+          processingMode === ProcessingModeEnum.GITHUB &&
           !loading &&
           output && (
             <div className="view-result-button-container">
@@ -110,8 +117,8 @@ const ControlsSection: React.FC<ControlsSectionProps> = ({
             </div>
           )}
       </div>
-      {processingMode === "github" &&
-        configStatus !== "ok" &&
+      {processingMode === ProcessingModeEnum.GITHUB &&
+        configStatus !== ConfigStatusEnum.OK &&
         !isConfigOpen && (
           <div className="alert alert-warning">
             {t("processing.github.configRequired")}
