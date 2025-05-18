@@ -95,7 +95,7 @@
    - GitHub：复制更新后的 Markdown
    - 本地：下载 ZIP
 
-## 配置说明
+## 配置
 
 ### GitHub 配置项
 

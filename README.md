@@ -95,7 +95,7 @@ English | [中文](README.zh-CN.md)
    - GitHub: Copy updated Markdown
    - Local: Download ZIP
 
-## Configuration Guide
+## Configuration
 
 ### GitHub Settings
 
