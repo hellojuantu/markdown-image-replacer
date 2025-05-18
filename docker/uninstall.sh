@@ -6,7 +6,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-echo -e "${YELLOW}Starting uninstallation of Markdown Image Replacer...${NC}"
+echo -e "${YELLOW}[WARN] Starting uninstallation of Markdown Image Replacer...${NC}"
 
 containers=$(docker ps -a -q --filter "name=markdown-image-replacer")
 if [[ -n "$containers" ]]; then
@@ -28,4 +28,4 @@ else
   echo -e "${YELLOW}[WARN] No Markdown Image Replacer images found.${NC}"
 fi
 
-echo -e "${GREEN}Uninstallation completed!${NC}"
+echo -e "${GREEN}[INFO] Uninstallation completed!${NC}"
