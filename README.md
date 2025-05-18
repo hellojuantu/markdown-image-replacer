@@ -130,7 +130,7 @@ If you choose to upload images and replace links using GitHub mode, you need to 
 
 2. **Generate a GitHub Token**
     - Go to [https://github.com/settings/tokens](https://github.com/settings/tokens)
-    - Click **"Generate new token (classic)"**
+    - Click **Generate new token (classic)**
     - Select the `repo` scope (including `repo:status`, `repo_deployment`, `public_repo`, `repo:invite`)
     - Copy the generated token (Note: it's shown only once, so store it securely)
 
@@ -138,7 +138,7 @@ If you choose to upload images and replace links using GitHub mode, you need to 
     - On the tool page, enter the following:
         - Username: your GitHub account name
         - Repository: the name you just created, e.g., `image-host`
-        - Branch: the initialized branch name, usually `main`
+        - Branch: the initialized branch name, e.g., `main`
         - Token: paste the GitHub token you just copied
 
 ### Image Settings

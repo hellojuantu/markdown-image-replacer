@@ -123,13 +123,13 @@
 1. **创建仓库**
    - 打开 [https://github.com/new](https://github.com/new)
    - 填写仓库名称，如：`image-host`
-   - 选择 Public
+   - 选择 **Public**
    - 点击 **Create repository**
    - 按照提示初始化分支，如：`main`
 
 2. **生成 GitHub Token**
    - 打开 [https://github.com/settings/tokens](https://github.com/settings/tokens)
-   - 点击 **"Generate new token (classic)"**
+   - 点击 **Generate new token (classic)**
    - 勾选 `repo` 权限（包括 `repo:status`, `repo_deployment`, `public_repo`, `repo:invite`）
    - 复制生成的 Token（注意：只显示一次，请妥善保存）
 
