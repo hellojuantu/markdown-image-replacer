@@ -40,7 +40,7 @@ English | [中文](README.zh-CN.md)
 ### One-Click Installation
 
 ```bash
-/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/install_run.sh)"
+/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://api.github.com/repos/hellojuantu/markdown-image-replacer/contents/docker/install_run.sh)"
 ```
 
 Access：http://localhost:13001
@@ -49,13 +49,13 @@ Access：http://localhost:13001
 ### One-Click Upgrade
 
 ```bash
-/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/upgrade.sh)"
+/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://api.github.com/repos/hellojuantu/markdown-image-replacer/contents/docker/upgrade.sh)"
 ```
 
 ### One-Click Uninstallation
 
 ```bash
-/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://raw.githubusercontent.com/hellojuantu/markdown-image-replacer/refs/heads/main/docker/uninstall.sh)"
+/bin/bash -c "$(curl -fsSL -H 'Accept: application/vnd.github.v3.raw' https://api.github.com/repos/hellojuantu/markdown-image-replacer/contents/docker/uninstall.sh)"
 ```
 
 ## Manual Setup
