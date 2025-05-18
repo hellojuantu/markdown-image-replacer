@@ -95,19 +95,48 @@ English | [中文](README.zh-CN.md)
    - GitHub: Copy updated Markdown
    - Local: Download ZIP
 
-## Configuration
+## Configuration Guide
 
 ### GitHub Settings
 
-- Username
-- Repository
-- Branch
-- Access Token (repo scope)
+To upload images and replace links using GitHub mode, you’ll need a GitHub repository (public or private) and an access token with the proper permissions. Below are the required fields and setup instructions.
+
+#### Required Fields
+
+| Field      | Description                                                   |
+|------------|---------------------------------------------------------------|
+| Username   | Your GitHub username (e.g., `hellojuantu`)                    |
+| Repository | Name of the repo used to store images (e.g., `image-host`)    |
+| Branch     | Target branch (default: `main`)                               |
+| Token      | GitHub access token with `repo` permissions                   |
+
+#### Steps to Create a Repository and Token
+
+1. **Create a GitHub Repository**
+   - Go to [https://github.com/new](https://github.com/new)
+   - Enter a repository name, such as `image-host`
+   - Set visibility to **Public**
+   - Click **Create repository**
+
+2. **Generate a GitHub Token**
+   - Visit [https://github.com/settings/tokens](https://github.com/settings/tokens)
+   - Click **"Generate new token (classic)"**
+   - Select the `repo` scope (including `repo:status`, `repo_deployment`, `public_repo`, `repo:invite`)
+   - Copy the generated token (**Note:** it will be shown only once, save it securely)
+
+3. **Enter the Configuration in the Tool**
+   - Fill in the following fields:
+      - **Username**: your GitHub account name
+      - **Repository**: the name of the repo you just created (e.g., `image-host`)
+      - **Branch**: usually `main`
+      - **Token**: paste the GitHub token
 
 ### Image Settings
 
-- Enable compression
-- TinyPNG API key
+| Field             | Description                                                                 |
+|-------------------|-----------------------------------------------------------------------------|
+| Enable Compression | Whether to compress images using TinyPNG                                   |
+| TinyPNG API Key    | Available from the [TinyPNG Developer Page](https://tinypng.com/developers) |
 
 ## Contributing
 
