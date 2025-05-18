@@ -108,7 +108,7 @@ Access：http://localhost:13001
 
 ### GitHub Settings
 
-To upload images and replace links using GitHub mode, you’ll need a GitHub repository (public or private) and an access token with the proper permissions. Below are the required fields and setup instructions.
+If you choose to upload images and replace links using GitHub mode, you need to prepare a public repository and provide an access token. Below are the configuration fields and setup instructions:
 
 #### Required Fields
 
@@ -121,24 +121,25 @@ To upload images and replace links using GitHub mode, you’ll need a GitHub rep
 
 #### Steps to Create a Repository and Token
 
-1. **Create a GitHub Repository**
-   - Go to [https://github.com/new](https://github.com/new)
-   - Enter a repository name, such as `image-host`
-   - Set visibility to **Public**
-   - Click **Create repository**
+1. **Create a Repository**
+    - Visit [https://github.com/new](https://github.com/new)
+    - Enter a repository name, e.g., `image-host`
+    - Choose **Public**
+    - Click **Create repository**
+    - Follow prompts to initialize with a branch (e.g., `main`)
 
 2. **Generate a GitHub Token**
-   - Visit [https://github.com/settings/tokens](https://github.com/settings/tokens)
-   - Click **"Generate new token (classic)"**
-   - Select the `repo` scope (including `repo:status`, `repo_deployment`, `public_repo`, `repo:invite`)
-   - Copy the generated token (**Note:** it will be shown only once, save it securely)
+    - Go to [https://github.com/settings/tokens](https://github.com/settings/tokens)
+    - Click **"Generate new token (classic)"**
+    - Select the `repo` scope (including `repo:status`, `repo_deployment`, `public_repo`, `repo:invite`)
+    - Copy the generated token (Note: it's shown only once, so store it securely)
 
-3. **Enter the Configuration in the Tool**
-   - Fill in the following fields:
-      - **Username**: your GitHub account name
-      - **Repository**: the name of the repo you just created (e.g., `image-host`)
-      - **Branch**: usually `main`
-      - **Token**: paste the GitHub token
+3. **Fill in the Configuration**
+    - On the tool page, enter the following:
+        - Username: your GitHub account name
+        - Repository: the name you just created, e.g., `image-host`
+        - Branch: the initialized branch name, usually `main`
+        - Token: paste the GitHub token you just copied
 
 ### Image Settings
 

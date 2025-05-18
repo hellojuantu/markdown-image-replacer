@@ -107,7 +107,7 @@
 
 ### GitHub 配置项
 
-若使用 GitHub 模式上传图片并替换链接，需提前准备一个公开或私有仓库，并提供访问凭证。以下是配置说明及操作步骤：
+若使用 GitHub 模式上传图片并替换链接，需提前准备一个公开仓库，并提供访问凭证。以下是配置说明及操作步骤：
 
 #### 基本配置字段
 
@@ -125,6 +125,7 @@
    - 填写仓库名称，如：`image-host`
    - 选择 Public
    - 点击 **Create repository**
+   - 按照提示初始化分支，如：`main`
 
 2. **生成 GitHub Token**
    - 打开 [https://github.com/settings/tokens](https://github.com/settings/tokens)
@@ -136,7 +137,7 @@
    - 在工具页面中输入上述信息：
       - 用户名：你的 GitHub 账户名
       - 仓库名：刚创建的仓库名，默认填 `image-host`
-      - 分支：默认填 `main`
+      - 分支：刚初始化的分支，默认填 `main`
       - Token：粘贴刚刚复制的 GitHub Token
 
 ### 图片设置
