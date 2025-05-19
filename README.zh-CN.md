@@ -10,7 +10,7 @@
 
 [English](README.md) | 中文
 
-![screenshot](demo/index-zh-CN.png)
+![screenshot](demo/demo-zh-CN.png)
 
 ## 目录
 

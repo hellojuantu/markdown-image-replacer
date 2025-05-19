@@ -553,7 +553,6 @@ export async function handleReplace(
           true,
         );
       }
-      throw err;
     })
     .finally(async () => {
       try {
