@@ -189,7 +189,7 @@ app.get("/api/temp-image", async (req, res) => {
   const safeFilename = path.basename(filename);
   if (
     safeFilename !== filename ||
-    !safeFilename.match(/^img_[\w-]+_[\d]+_[\d]+\.(png|jpe?g|gif|webp|svg)$/i)
+    !safeFilename.match(/^[\w-]+_[\d]+_[\d]+\.(png|jpe?g|gif|webp|svg)$/i)
   ) {
     logger.error(
       `[${opId}] Invalid request: Invalid filename format: '${filename}'`,

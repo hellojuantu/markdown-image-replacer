@@ -336,34 +336,22 @@ export async function handleReplace(
   }
 
   async function processImageUrls(content, logSse) {
-    const imageRegex = /!\[([^\]]*)\]\((https?:\/\/[^\s)]+)\)/g;
+    const imageRegex = /!\[([^\]]*)\]\((https?:\/\/.+?)\)/g;
     const matches = Array.from(content.matchAll(imageRegex));
     logSse(`🔍 Found ${matches.length} images`);
 
     const imagesToProcess = [];
     for (let i = 0; i < matches.length; i++) {
       const match = matches[i];
-      const altText = match[1];
+      const altTextFromMarkdown = match[1];
       const originalUrl = match[2];
-      let ext = ".png";
-      try {
-        const parsedUrl = new URL(originalUrl);
-        const pathnameExt = path.extname(parsedUrl.pathname);
-        if (pathnameExt && pathnameExt.length > 1) {
-          ext = pathnameExt.split("?")[0].split("#")[0];
-        }
-      } catch (e) {
-        logSse(`⚠️ Failed to parse URL extension: '${originalUrl}'`);
-      }
-      const safeAltText =
-        altText
-          .substring(0, 30)
-          .replace(/[<>:"/\\|?*]/g, "_")
-          .replace(/\s+/g, "_") || "image";
-      const baseFilename = `img_${safeAltText}_${Date.now()}_${i + 1}`;
+
+      const ext = ".png";
+      const baseFilename = `image_${Date.now()}_${i + 1}`;
+
       imagesToProcess.push({
         originalUrl,
-        altText,
+        altText: altTextFromMarkdown,
         filenameWithExt: `${baseFilename}${ext}`,
         newRelativePath: `images/${baseFilename}${ext}`,
       });
