@@ -92,7 +92,11 @@ export default function MarkdownImageReplacer() {
         console.error("Failed to parse settings from localStorage", e);
         localStorage.removeItem("mdUploaderSettings");
       }
+    } else {
+      loadedConfig = { ...defaultConfigValues };
+      setConfig(loadedConfig);
     }
+
     if (
       processingMode === ProcessingModeEnum.GITHUB &&
       (!loadedConfig.username ||
